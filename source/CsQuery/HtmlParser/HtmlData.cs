@@ -398,7 +398,6 @@ namespace CsQuery.HtmlParser
         /// </summary>
 
         private static ulong nextID = 2;
-        //private static List<string> Tokens = new List<string>();
         private static Dictionary<ulong, string> TokenLookup = new Dictionary<ulong, string>();
         private static Dictionary<string, ulong> TokenIDs;
         private static object locker = new Object();
@@ -412,11 +411,12 @@ namespace CsQuery.HtmlParser
         // so we can mask it for fast comparisons. If the number of tags with data exceeded 64
         // this can just increase; anything above the last used slot will just be 0.
 
-        private static ulong[] TokenMetadata = new ulong[256];
+        private const int TokenMetadataLength = 256;
 
-        // (256 * 256) & ~256
+        private static ulong[] TokenMetadata = new ulong[TokenMetadataLength];
+
         // this is the mask to test if an ID is in outside short list
-        private const ulong NonSpecialTokenMask = (ulong)65280;
+        private const ulong NonSpecialTokenMask = ulong.MaxValue - (TokenMetadataLength - 1);
 
         #endregion
 
@@ -570,7 +570,6 @@ namespace CsQuery.HtmlParser
 
             while (nextID < (ulong)TokenMetadata.Length)
             {
-                //Tokens.Add(null);
                 nextID++;
             }
 
@@ -620,7 +619,6 @@ namespace CsQuery.HtmlParser
             get
             {
                 return TokenIDs.Keys;
-                //return Tokens;
             }
         }
 
@@ -945,11 +943,8 @@ namespace CsQuery.HtmlParser
                 {
                     if (!TokenIDs.TryGetValue(tokenName, out id))
                     {
-                        //Tokens.Add(tokenName);
                         TokenLookup.Add(nextID, tokenName);
                         TokenIDs.Add(tokenName, nextID);
-                        // if for some reason we go over 65,535, will overflow and crash. no need 
-                        // to check
                         id = nextID++;
                     }
                 }
@@ -974,7 +969,6 @@ namespace CsQuery.HtmlParser
             return tokenId <= 0
                 ? ""
                 : TokenLookup[tokenId];
-            //: Tokens[tokenId - 2];
         }
 
         /// <summary>
