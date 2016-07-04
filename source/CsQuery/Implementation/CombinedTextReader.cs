@@ -46,7 +46,7 @@ namespace CsQuery.Implementation
         {
             foreach (var reader in Readers)
             {
-                reader.Close();
+                reader.Dispose();
             }
         }
 

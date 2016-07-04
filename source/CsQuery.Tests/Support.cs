@@ -29,7 +29,7 @@ namespace Jtc.CsQuery.Tests
             filedata = new byte[fs.Length];
             fs.Read(filedata, 0, (int)fs.Length);
             string result = enc.GetString(filedata).Replace("\r", " ").Replace("\n", " ");
-            fs.Close();
+            fs.Dispose();
             return (result);
         }
     }
