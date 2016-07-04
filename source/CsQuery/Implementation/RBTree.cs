@@ -37,7 +37,6 @@ using System.Collections.Generic;
 #if DEBUG
 namespace CsQuery.Implementation.Mono
 {
-    [Serializable]
     internal class RBTree : IEnumerable, IEnumerable<RBTree.Node>
     {
         public interface INodeHelper<T>
@@ -699,7 +698,6 @@ namespace CsQuery.Implementation.Mono
             }
         }
 
-        [Serializable]
         public struct NodeEnumerator : IEnumerator, IEnumerator<Node>
         {
             RBTree tree;

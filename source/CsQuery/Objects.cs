@@ -83,7 +83,6 @@ namespace CsQuery
         public static bool IsImmutable(object obj)
         {
             return obj == null ||
-                obj == System.DBNull.Value ||
                 obj is string ||
                 (obj is ValueType && !(Objects.IsKeyValuePair(obj)));
         }

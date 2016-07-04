@@ -38,19 +38,6 @@ namespace CsQuery.Implementation
         int Count;
 
         /// <summary>
-        /// Closes the <see cref="T:System.IO.TextReader" /> and releases any system resources associated
-        /// with the TextReader.
-        /// </summary>
-
-        public override void Close()
-        {
-            foreach (var reader in Readers)
-            {
-                reader.Dispose();
-            }
-        }
-
-        /// <summary>
         /// Releases the unmanaged resources used by the <see cref="T:System.IO.TextReader" /> and
         /// optionally releases the managed resources.
         /// </summary>
@@ -255,24 +242,6 @@ namespace CsQuery.Implementation
                 sb.Append(Current.ReadToEnd() ?? "");
             }
             return sb.ToString();
-        }
-        
-        /// <summary>
-        /// Initializes the lifetime service. (Overridden because it's implemented by the base class and we want
-        /// to be sure that anything trying to use this will fail).
-        /// </summary>
-        ///
-        /// <exception cref="NotImplementedException">
-        /// Thrown when the requested operation is unimplemented.
-        /// </exception>
-        ///
-        /// <returns>
-        /// Always fails
-        /// </returns>
-
-        public override object InitializeLifetimeService()
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
