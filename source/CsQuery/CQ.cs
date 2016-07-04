@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.Reflection;
 using System.IO;
-using System.Web;
 using CsQuery.ExtensionMethods;
 using CsQuery.HtmlParser;
 using CsQuery.StringScanner;

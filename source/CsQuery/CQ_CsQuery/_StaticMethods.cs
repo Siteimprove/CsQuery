@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Dynamic;
 using System.IO;
-using System.Web;
 using CsQuery.ExtensionMethods.Internal;
 using CsQuery.Utility;
 using CsQuery.Engine;
