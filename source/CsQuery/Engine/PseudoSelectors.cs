@@ -246,7 +246,7 @@ namespace CsQuery.Engine
         private void PopulateInnerSelectors()
         {
             string defaultNamespace = "CsQuery.Engine.PseudoClassSelectors";
-            PopulateFromAssembly(Assembly.GetExecutingAssembly(),defaultNamespace);
+            PopulateFromAssembly(typeof(PseudoSelectors).Assembly, defaultNamespace);
             if (InnerSelectors.Count == 0)
             {
                 throw new InvalidOperationException(String.Format("I didn't find the native PseudoClassSelectors in the namespace {0}.",defaultNamespace));

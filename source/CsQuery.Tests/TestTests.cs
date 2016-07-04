@@ -28,7 +28,7 @@ namespace CsQuery.Tests
         [Test,TestMethod]
         public void AnalyzeAndVerify()
         {
-            var assem = Assembly.GetExecutingAssembly();
+            var assem = typeof (TestTests).Assembly;
             foreach (var type in assem.GetTypes())
             {
                 VerifyType(type);
