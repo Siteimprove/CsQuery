@@ -256,29 +256,7 @@ namespace CsQuery.Implementation
             }
             return sb.ToString();
         }
-
-        /// <summary>
-        /// Creates object reference. (Overridden because it's implemented by the base class and we want
-        /// to be sure that anything trying to use this will fail).
-        /// </summary>
-        ///
-        /// <exception cref="NotImplementedException">
-        /// Thrown when the requested operation is unimplemented.
-        /// </exception>
-        ///
-        /// <param name="requestedType">
-        /// Type of the requested.
-        /// </param>
-        ///
-        /// <returns>
-        /// Always fails.
-        /// </returns>
-
-        public override System.Runtime.Remoting.ObjRef CreateObjRef(Type requestedType)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         /// <summary>
         /// Initializes the lifetime service. (Overridden because it's implemented by the base class and we want
         /// to be sure that anything trying to use this will fail).
