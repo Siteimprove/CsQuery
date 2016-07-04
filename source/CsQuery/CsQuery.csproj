@@ -348,9 +348,7 @@
     <Compile Include="HtmlParser\enumTokenProperties.cs" />
     <Compile Include="Implementation\CombinedStream.cs" />
     <Compile Include="Implementation\CombinedTextReader.cs" />
-    <Compile Include="Implementation\MonoSortedSet.cs" />
     <Compile Include="Implementation\PathKeyComparer.cs" />
-    <Compile Include="Implementation\MonoDictionary.cs" />
     <Compile Include="Implementation\RBTree.cs" />
     <Compile Include="Output\HtmlEncoderFull.cs" />
     <Compile Include="Output\HtmlEncoderMinimumNbsp.cs" />
