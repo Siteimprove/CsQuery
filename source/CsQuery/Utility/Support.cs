@@ -194,7 +194,7 @@ namespace CsQuery.Utility
         /// <returns></returns>
         public static Stream GetResourceStream(string resourceName)
         {
-            return GetResourceStream(resourceName, typeof(Support).Assembly);
+            return GetResourceStream(resourceName, typeof(Support).GetTypeInfo().Assembly);
         }
 
         /// <summary>

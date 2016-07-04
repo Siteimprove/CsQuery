@@ -236,7 +236,7 @@ namespace CsQuery.Engine
 
         private void ValidateType(Type value)
         {
-            if (value.GetInterface("IPseudoSelector") == null)
+            if (value.GetTypeInfo().GetInterface("IPseudoSelector") == null)
             {
                 throw new ArgumentException("The type must implement IPseudoSelector.");
             }

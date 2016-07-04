@@ -7,6 +7,7 @@ using CsQuery.Engine;
 using CsQuery.Output;
 using CsQuery.Implementation;
 using System.Net;
+using System.Reflection;
 
 namespace CsQuery
 {
@@ -217,10 +218,9 @@ namespace CsQuery
             }
             set
             {
-                if (value.GetInterfaces().Where(item =>
-                    item == typeof(IDynamicMetaObjectProvider) ||
-                    item == typeof(IDictionary<string, object>))
-                    .Count() == 2)
+                if (value.GetTypeInfo().GetInterfaces()
+                    .Count(item => item == typeof(IDynamicMetaObjectProvider) ||
+                    item == typeof(IDictionary<string, object>)) == 2)
                 {
                     _DynamicObjectType = value;
                 }
