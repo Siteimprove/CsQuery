@@ -132,7 +132,7 @@ namespace CsQuery
 
             // Make sure attempts to pass a JSON string end up a the right place
             
-            if (Objects.IsJson(name) && value.GetType() == typeof(bool))
+            if (Objects.IsJson(name) && value is bool)
             {
                 return AttrSet(name, (bool)value);
             }

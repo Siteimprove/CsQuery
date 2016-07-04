@@ -12,6 +12,7 @@ using CollectionAssert = NUnit.Framework.CollectionAssert;
 using StringAssert = NUnit.Framework.StringAssert;
 using TestContext = Microsoft.VisualStudio.TestTools.UnitTesting.TestContext;
 using MSClassInitialize = Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute;
+using System.Reflection;
 
 namespace CsQuery.Tests
 {
@@ -109,11 +110,11 @@ namespace CsQuery.Tests
             {
                 return Dom.Select((string)parm);
             }
-            else if (typeof(IEnumerable<IDomObject>).IsAssignableFrom(parm.GetType()))
+            else if (typeof(IEnumerable<IDomObject>).GetTypeInfo().IsInstanceOfType(parm))
             {
                 return Dom.Select((IEnumerable<IDomObject>)parm);
             }
-            else if (typeof(IDomObject).IsAssignableFrom(parm.GetType()))
+            else if (typeof(IDomObject).GetTypeInfo().IsInstanceOfType(parm))
             {
                 return Dom.Select((IDomObject)parm);
             }

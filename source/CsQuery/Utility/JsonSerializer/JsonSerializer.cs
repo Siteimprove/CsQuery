@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -188,9 +189,10 @@ namespace CsQuery.Utility
             Type type = value.GetType();
 
             return type.GetInterfaces()
-              .Where(t => t.IsGenericType)
-              .Select(t => t.GetGenericTypeDefinition())
-              .Any(t => t.Equals(typeof(IDictionary<,>)));
+                .Select(t => t.GetTypeInfo())
+                .Where(t => t.IsGenericType)
+                .Select(t => t.GetGenericTypeDefinition())
+                .Any(t => t == typeof (IDictionary<,>));
 
         }
 

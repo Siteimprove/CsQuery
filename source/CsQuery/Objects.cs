@@ -21,7 +21,7 @@ namespace CsQuery
         static Objects()
         {
             IgnorePropertyNames = new HashSet<string>();
-            var info = typeof(object).GetMembers();
+            var info = typeof(object).GetTypeInfo().GetMembers();
             foreach (var member in info)
             {
                 IgnorePropertyNames.Add(member.Name);
@@ -45,7 +45,7 @@ namespace CsQuery
         public static bool IsNullableType(Type type)
         {
             return type == typeof(string) ||
-                (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+                (type.GetTypeInfo().IsGenericType && type.GetTypeInfo().GetGenericTypeDefinition() == typeof(Nullable<>));
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace CsQuery
         public static bool IsNumericType(Type type)
         {
             Type t = GetUnderlyingType(type);
-            return t.IsPrimitive && !(t == typeof(string) || t == typeof(char) || t == typeof(bool));
+            return t.GetTypeInfo().IsPrimitive && !(t == typeof(string) || t == typeof(char) || t == typeof(bool));
         }
 
         /// <summary>
@@ -175,7 +175,8 @@ namespace CsQuery
         public static bool IsNativeType(Type type)
         {
             Type t = GetUnderlyingType(type);
-            return t.IsEnum || t.IsValueType || t.IsPrimitive || t == typeof(string);
+            var ti = t.GetTypeInfo();
+            return ti.IsEnum || ti.IsValueType || ti.IsPrimitive || t == typeof(string);
         }
 
         /// <summary>
@@ -262,9 +263,10 @@ namespace CsQuery
         public static bool IsKeyValuePair(object obj)
         {
             Type valueType = obj.GetType();
-            if (valueType.IsGenericType)
+            var valueTypeInfo = valueType.GetTypeInfo();
+            if (valueTypeInfo.IsGenericType)
             {
-                Type baseType = valueType.GetGenericTypeDefinition();
+                Type baseType = valueTypeInfo.GetGenericTypeDefinition();
                 if (baseType == typeof(KeyValuePair<,>))
                 {
                     return true;
@@ -522,7 +524,7 @@ namespace CsQuery
                     output = result;
                 }
             }
-            else if (realType.IsEnum)
+            else if (realType.GetTypeInfo().IsEnum)
             {
                 output = Enum.Parse(realType, stringVal);
                 success = true;
@@ -628,8 +630,9 @@ namespace CsQuery
 
             // If it's not a nullable type, just pass through the parameters to Convert.ChangeType
 
-            if (conversionType.IsGenericType &&
-              conversionType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            var conversionInfo = conversionType.GetTypeInfo();
+            if (conversionInfo.IsGenericType &&
+              conversionInfo.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
                 // It's a nullable type, so instead of calling Convert.ChangeType directly which would throw a
                 // InvalidCastException (per http://weblogs.asp.net/pjohnson/archive/2006/02/07/437631.aspx),
@@ -787,7 +790,7 @@ namespace CsQuery
 
         public static object DefaultValue(Type type)
         {
-            return type.IsValueType ?
+            return type.GetTypeInfo().IsValueType ?
                 CreateInstance(type) : null;
         }
 
@@ -969,7 +972,7 @@ namespace CsQuery
         private static object ParseValue(object value)
         {
             object result;
-            if (value != null && value.GetType().IsAssignableFrom(typeof(DateTime)))
+            if (value != null && value.GetType().GetTypeInfo().IsAssignableFrom(typeof(DateTime)))
             {
                 result = DateTime.SpecifyKind((DateTime)value, DateTimeKind.Utc).ToLocalTime();
             }
@@ -1041,7 +1044,7 @@ namespace CsQuery
                     // This means a single type was found, and we can create a strongly typed array
                     // If it's a list of objects, map again to the default dynamic type
 
-                    if (typeof(IDictionary<string, object>).IsAssignableFrom(onlyType))
+                    if (typeof(IDictionary<string, object>).GetTypeInfo().IsAssignableFrom(onlyType))
                     {
                         array = Array.CreateInstance(Config.DynamicObjectType, objectList.Count);
                     }
@@ -1233,7 +1236,7 @@ namespace CsQuery
                 else
                 {
                     // treat it as a regular object - try to copy fields/properties
-                    IEnumerable<MemberInfo> members = source.GetType().GetMembers();
+                    IEnumerable<MemberInfo> members = source.GetType().GetTypeInfo().GetMembers();
 
                     object value;
                     foreach (var member in members)

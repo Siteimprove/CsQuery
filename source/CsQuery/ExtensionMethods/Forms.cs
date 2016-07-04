@@ -292,7 +292,7 @@ namespace CsQuery.ExtensionMethods.Forms
             string zeroText = null, 
             bool format = false) where T : IConvertible
         {
-            if (!typeof(T).IsEnum)
+            if (!typeof(T).GetTypeInfo().IsEnum)
             {
                 throw new ArgumentException("T must be an enumerated type");
             }

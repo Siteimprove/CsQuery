@@ -246,7 +246,7 @@ namespace CsQuery.Engine
         private void PopulateInnerSelectors()
         {
             string defaultNamespace = "CsQuery.Engine.PseudoClassSelectors";
-            PopulateFromAssembly(typeof(PseudoSelectors).Assembly, defaultNamespace);
+            PopulateFromAssembly(typeof(PseudoSelectors).GetTypeInfo().Assembly, defaultNamespace);
             if (InnerSelectors.Count == 0)
             {
                 throw new InvalidOperationException(String.Format("I didn't find the native PseudoClassSelectors in the namespace {0}.",defaultNamespace));
@@ -263,11 +263,12 @@ namespace CsQuery.Engine
             int loaded = 0;
             foreach (var t in assy.GetTypes())
             {
-                if (t.IsClass && t.Namespace != null &&
-                    !t.IsAbstract &&
-                    nameSpaces.Contains(t.Namespace))
+                var ti = t.GetTypeInfo();
+                if (ti.IsClass && ti.Namespace != null &&
+                    !ti.IsAbstract &&
+                    nameSpaces.Contains(ti.Namespace))
                 {
-                    if (t.GetInterface("IPseudoSelector") != null)
+                    if (ti.GetInterface("IPseudoSelector") != null)
                     {
                         IPseudoSelector instance = (IPseudoSelector)FastActivator.CreateInstance(t);
                         InnerSelectors[instance.Name]=t;
