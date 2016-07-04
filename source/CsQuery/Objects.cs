@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Dynamic;
 using System.Reflection;
-using System.Web.Script.Serialization;
 using System.ComponentModel;
 using CsQuery.ExtensionMethods;
 using CsQuery.ExtensionMethods.Internal;
@@ -727,7 +726,7 @@ namespace CsQuery
         /// <returns></returns>
         public static IEnumerable<T> EnumerateProperties<T>(object obj)
         {
-            return EnumerateProperties<T>(obj, new Type[] { typeof(ScriptIgnoreAttribute) });
+            return EnumerateProperties<T>(obj, new Type[] {  });
         }
 
         /// <summary>

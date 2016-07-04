@@ -16,7 +16,6 @@ using TestContext = Microsoft.VisualStudio.TestTools.UnitTesting.TestContext;
 using CsQuery;
 using CsQuery.HtmlParser;
 using CsQuery.Utility;
-using CsQuery.Web;
 
 namespace CsQuery.Tests.HtmlParser
 {
@@ -112,158 +111,8 @@ namespace CsQuery.Tests.HtmlParser
             Assert.AreEqual("₪", outputHebrewChar);
 
         }
+        
 
-        [TestMethod,Test]
-        public void ContentTypeHeader()
-        {
-            var creator = new Mocks.MockWebRequestCreator();
-            creator.CharacterSet = "windows-1255";
-            creator.ResponseStream = GetMemoryStream(htmlStart + htmlStart3 + hebrewChar + htmlEnd, Encoding.GetEncoding("windows-1255"));
-            
-            CsqWebRequest request = new CsqWebRequest("http://test.com", creator);
-            
-            var dom1 = CQ.Create(request.Get());
-
-            creator.CharacterSet = "";
-            request = new CsqWebRequest("http://test.com", creator);
-            var dom2 = CQ.Create(request.Get());
-
-            var output = dom1.Render(OutputFormatters.HtmlEncodingMinimum);
-
-            // The characters should be encoded differently.
-
-            var outputHebrewChar = dom1["#test"].Text();
-            var outputUTF8Char = dom2["#test"].Text();
-            Assert.AreNotEqual(outputHebrewChar, outputUTF8Char);
-
-            // try it again, using the meta tag
-            creator.CharacterSet = "windows-1255";
-            creator.ResponseStream = GetMemoryStream(htmlStart + htmlStartMeta + htmlStart3 + hebrewChar + htmlEnd, Encoding.GetEncoding("windows-1255"));
-
-            /// CreateFromUrl process
-            
-            request = new CsqWebRequest("http://test.com", creator);
-            var httpRequest = request.GetWebRequest();
-            var response = httpRequest.GetResponse();
-            var responseStream = response.GetResponseStream();
-            var encoding = CsqWebRequest.GetEncoding(response);
-
-            var dom3 = CQ.CreateDocument(responseStream, encoding);
-            var outputHebrewChar2 = dom3["#test"].Text();
-
-            Assert.AreEqual(outputHebrewChar, outputHebrewChar2);
-
-        }
-
-        private string arabicExpected = @"البابا: اوقفوا ""المجزرة"" في سوريا قبل ان تتحول البلاد الى ""أطلال""";
-
-        [TestMethod, Test]
-        public void Utf8NoContentType()
-        {
-
-            var creator = new Mocks.MockWebRequestCreator();
-            creator.CharacterSet = "ISO-8859-1";
-            creator.ResponseStream = GetMemoryStream(TestHtml("arabic"), new UTF8Encoding(false));
-
-            CsqWebRequest request = new CsqWebRequest("http://test.com", creator);
-            
-            // remove the content type header
-            var html = ReplaceCharacterSet(request.Get());
-
-            var dom = CQ.CreateDocument(html);
-
-            Assert.AreNotEqual(arabicExpected, dom["h1"].Text());
-
-            //test synchronous: this is the code that CreateFromURL uses 
-
-            creator.CharacterSet = null;
-            request = new CsqWebRequest("http://test.com", creator);
-
-            var httpRequest = request.GetWebRequest();
-            var response = httpRequest.GetResponse();
-            var responseStream = response.GetResponseStream();
-            var encoding = CsqWebRequest.GetEncoding(response);
-            var dom2 = CQ.CreateDocument(responseStream, encoding);
-
-            Assert.AreEqual(arabicExpected, dom2["h1"].Text());
-
-            // Test async version now
-
-            request = new CsqWebRequest("http://test.com", creator);
-            
-            bool? done=null;
-            CQ dom3=null;
-
-            request.GetAsync((r) =>
-            {
-                dom3 = r.Dom;
-                done = true;
-            }, (r)=>{
-                done = false;   
-            });
-
-            while (done == null) ;
-            Assert.IsTrue((bool)done);
-            Assert.AreEqual(arabicExpected, dom3["h1"].Text());
-
-        }
-
-      
-        /// <summary>
-        /// Ensure that BOM takes precendence over anything else
-        /// </summary>
-
-        [TestMethod, Test]
-        public void MismatchedContentTypeHeaderAndBOM()
-        {
-
-            var creator = new Mocks.MockWebRequestCreator();
-            creator.CharacterSet = "ISO-8859-1";
-            
-            // response stream has UTF8 BOM; the latin encoding should be ignored.
-            var html = ReplaceCharacterSet(TestHtml("arabic"));
-            creator.ResponseStream = GetMemoryStream(html, new UTF8Encoding(true));
-
-            CsqWebRequest request = new CsqWebRequest("http://test.com", creator);
-
-
-            var dom = ProcessMockWebRequestSync(request);
-
-            Assert.AreEqual(arabicExpected, dom["h1"].Text());
-
-          
-        }
-
-        /// <summary>
-        /// XML encoding declarations should kick in if there's no content-type or BOM.
-        /// </summary>
-
-        [TestMethod, Test]
-        public void XmlEncodingDeclaration()
-        {
-
-            var creator = new Mocks.MockWebRequestCreator();
-            creator.CharacterSet = null;
-            
-            var html =  ReplaceCharacterSet(TestHtml("arabic"),"ISO-8859-1");
-                       
-            creator.ResponseStream = GetMemoryStream(html, null);
-            CsqWebRequest request = new CsqWebRequest("http://test.com", creator);
-
-            var dom = ProcessMockWebRequestSync(request);
-            Assert.AreNotEqual(arabicExpected, dom["h1"].Text());
-
-
-            // contains xml UTF8 and inline ISO encoding
-            
-            html = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + html;
-            creator.ResponseStream = GetMemoryStream(html, null);
-            request = new CsqWebRequest("http://test.com", creator);
-            
-            dom = ProcessMockWebRequestSync(request);
-            Assert.AreEqual(arabicExpected, dom["h1"].Text());
-          
-        }
         /// <summary>
         /// Removes the "meta http-equiv='Content-Type'" header, or replaces it with a different character set
         /// </summary>
@@ -289,26 +138,6 @@ namespace CsQuery.Tests.HtmlParser
             }
             return html.Substring(0, start) + replaceWith + html.Substring(end + 1);
         }
-
-        /// <summary>
-        /// Process the mock web request synchronously using same rules as CreateFromUrl
-        /// </summary>
-        ///
-        /// <param name="request">
-        /// The request.
-        /// </param>
-        ///
-        /// <returns>
-        /// .
-        /// </returns>
-
-        private CQ ProcessMockWebRequestSync(CsqWebRequest request)
-        {
-            var httpRequest = request.GetWebRequest();
-            var response = httpRequest.GetResponse();
-            var responseStream = response.GetResponseStream();
-            var encoding = CsqWebRequest.GetEncoding(response);
-           return  CQ.CreateDocument(responseStream, encoding);
-        }
+        
     }
 }

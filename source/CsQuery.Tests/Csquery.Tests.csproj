@@ -104,7 +104,6 @@
     <Compile Include="Core\Methods\Data.cs" />
     <Compile Include="Core\Selectors\ContentIsNotNumeric.cs" />
     <Compile Include="Core\Selectors\CSS3\FirstChild.cs" />
-    <Compile Include="Core\WebIO\BasicWeb.cs" />
     <Compile Include="ExtensionMethods\Xml.cs" />
     <Compile Include="HtmlParser\Button.cs" />
     <Compile Include="HtmlParser\CharacterSetEncoding.cs" />
@@ -237,7 +236,6 @@
     <Compile Include="Implementation\IndexQueue.cs" />
     <Compile Include="Implementation\RangeSortedDictionary.cs" />
     <Compile Include="Miscellaneous\Miscellaneous2.cs" />
-    <Compile Include="Mocks\MockAsyncResult.cs" />
     <Compile Include="Utility\Extend.cs" />
     <Compile Include="Utility\Support.cs" />
     <Compile Include="Utility\FastActivator.cs" />
@@ -246,11 +244,6 @@
     <Compile Include="jsdom\Attributes.cs" />
     <Compile Include="jsdom\JsdomTest.cs" />
     <Compile Include="jsdom\Level2\Level2.cs" />
-    <Compile Include="Examples\YahooParse.cs" />
-    <Compile Include="Mocks\MockHttpWebResponse.cs" />
-    <Compile Include="Mocks\MockHttpWebRequest.cs" />
-    <Compile Include="Mocks\MockWebRequestCreator.cs" />
-    <Compile Include="Core\WebIO\StressTests.cs" />
     <Compile Include="TestTests.cs" />
     <Compile Include="HtmlParser\Classes.cs" />
     <Compile Include="HtmlParser\HtmlDomData.cs" />
@@ -304,7 +297,6 @@
     <Compile Include="ExtensionMethods\ExtensionMethodTests.cs" />
     <Compile Include="Utility\JSON.cs" />
     <Compile Include="jQuery\Traversing.cs" />
-    <Compile Include="Core\WebIO\QueryRemoteServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\HTML Standard.htm">

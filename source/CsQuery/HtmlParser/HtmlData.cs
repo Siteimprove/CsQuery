@@ -1047,7 +1047,7 @@ namespace CsQuery.HtmlParser
 
         public static string HtmlDecode(string html)
         {
-            return System.Web.HttpUtility.HtmlDecode(html);
+            return System.Net.WebUtility.HtmlDecode(html);
 
         }
         /// <summary>

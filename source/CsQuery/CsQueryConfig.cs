@@ -7,7 +7,6 @@ using CsQuery.Engine;
 using CsQuery.Output;
 using CsQuery.Implementation;
 using System.Net;
-using HttpWebAdapters;
 
 namespace CsQuery
 {
@@ -183,24 +182,6 @@ namespace CsQuery
                 _OutputFormatter = null;
             }
         }
-
-        /// <summary>
-        /// A method that returns a new HttpWebRequest. This is mostly useful for providing an alternate
-        /// implementation for testing.
-        /// </summary>
-
-        public IHttpWebRequestFactory WebRequestFactory
-        {
-            get
-            {
-                if (_WebRequestFactory == null)
-                {
-                    _WebRequestFactory = new HttpWebRequestFactory();
-                }
-                return _WebRequestFactory;
-            }
-        }
-        private IHttpWebRequestFactory _WebRequestFactory;
 
         /// <summary>
         /// Default document type. This is the parsing mode that will be used when creating documents

@@ -9,7 +9,6 @@ using System.Dynamic;
 using System.Reflection;
 using System.IO;
 using System.Web;
-using System.Web.Script.Serialization;
 using CsQuery.ExtensionMethods;
 using CsQuery.HtmlParser;
 using CsQuery.StringScanner;

@@ -90,10 +90,12 @@
     <AssemblyOriginatorKeyFile>CsQuery.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -107,7 +109,6 @@
     <Compile Include="CQ_CsQuery\HasAttr.cs" />
     <Compile Include="CQ_CsQuery\AttrReplace.cs" />
     <Compile Include="CQ_CsQuery\Version.cs" />
-    <Compile Include="CQ_CsQuery\CreateFromUrl.cs" />
     <Compile Include="CQ_CsQuery\Create.cs" />
     <Compile Include="CQ_CsQuery\Save.cs" />
     <Compile Include="CQ_CsQuery\MakeRoot.cs" />
@@ -346,15 +347,6 @@
     <Compile Include="HtmlParser\HtmlStyles.cs" />
     <Compile Include="HtmlParser\enumTokenProperties.cs" />
     <Compile Include="Implementation\CombinedStream.cs" />
-    <Compile Include="HttpWebAdapters\IHttpWebRequest.cs" />
-    <Compile Include="HttpWebAdapters\IHttpWebRequestFactory.cs" />
-    <Compile Include="HttpWebAdapters\IHttpWebResponse.cs" />
-    <Compile Include="HttpWebAdapters\Impl\BasicAuthHttpWebRequestFactory.cs" />
-    <Compile Include="HttpWebAdapters\Impl\HttpWebRequestAdapter.cs" />
-    <Compile Include="HttpWebAdapters\Impl\HttpWebRequestFactory.cs" />
-    <Compile Include="HttpWebAdapters\Impl\HttpWebRequestMethod.cs" />
-    <Compile Include="HttpWebAdapters\Impl\HttpWebResponseAdapter.cs" />
-    <Compile Include="HttpWebAdapters\WebResponseStub.cs" />
     <Compile Include="Implementation\CombinedTextReader.cs" />
     <Compile Include="Implementation\MonoSortedSet.cs" />
     <Compile Include="Implementation\PathKeyComparer.cs" />
@@ -406,9 +398,6 @@
     <Compile Include="Utility\FastActivator.cs" />
     <Compile Include="Utility\SelectorCache.cs" />
     <Compile Include="Utility\Types.cs" />
-    <Compile Include="Web\enumRequestState.cs" />
-    <Compile Include="Web\ICsqWebRequestMetadata.cs" />
-    <Compile Include="Web\WebForms.cs" />
     <Compile Include="Output\IOutputFormatter.cs" />
     <Compile Include="Output\FormatPlainText.cs" />
     <Compile Include="Promises\WhenAll.cs" />
@@ -416,12 +405,9 @@
     <Compile Include="Promises\DeferredT.cs" />
     <Compile Include="Promises\IPromise.cs" />
     <Compile Include="Promises\Deferred.cs" />
-    <Compile Include="Utility\Browser.cs" />
     <Compile Include="Utility\JsonSerializer\IJsonSerializer.cs" />
     <Compile Include="Utility\JsonSerializer\JsonSerializer.cs" />
     <Compile Include="Implementation\SelectionSetComparer.cs" />
-    <Compile Include="Web\AsyncWebRequestManager.cs" />
-    <Compile Include="Web\ICsqWebResponse.cs" />
     <Compile Include="Implementation\IRangeSortedDictionary.cs" />
     <Compile Include="CQ.cs" />
     <Compile Include="Engine\SelectorClause.cs" />
@@ -466,19 +452,10 @@
     <Compile Include="Engine\PseudoClassSelectors\Css\NthChildMatcher.cs" />
     <Compile Include="Engine\SelectorEngine.cs" />
     <Compile Include="ExtensionMethods\Internal\ExtensionMethods.cs" />
-    <Compile Include="Web\AsyncPostbackData.cs" />
-    <Compile Include="Web\IAsyncRequestQueue.cs" />
-    <Compile Include="Web\ICsqWebRequest.cs" />
-    <Compile Include="Web\IWebRequestInfo.cs" />
-    <Compile Include="Web\CsqWebRequest.cs" />
-    <Compile Include="Web\AsyncWebRequest.cs" />
-    <Compile Include="Web\ServerConfig.cs" />
-    <Compile Include="Web\WebRequestState.cs" />
     <Compile Include="Implementation\SelectionSet.cs" />
     <Compile Include="JsObject.cs" />
     <Compile Include="Dom\Implementation\ChildNodeList.cs" />
     <Compile Include="Implementation\RangeSortedDictionary.cs" />
-    <Compile Include="Web\CsQueryHttpContext.cs" />
     <Compile Include="Engine\Selector.cs" />
     <Compile Include="Dom\Implementation\DomElement.cs" />
     <Compile Include="ExtensionMethods\ExtensionMethods.cs" />
@@ -498,6 +475,7 @@
     <None Include="Documentation\Architecture.md" />
     <None Include="Documentation\Todo.md" />
     <None Include="Documentation\DifferencesFromJQuery.md" />
+    <None Include="packages.config" />
     <None Include="README-compilation.md" />
   </ItemGroup>
   <ItemGroup>

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Web;
-using System.Web.UI.WebControls;
-using System.Web.UI;
 using System.Text.RegularExpressions;
 using System.Linq;
-using System.Web.Script.Serialization;
 using System.Dynamic;
+using System.Net;
 using System.Text;
 using System.Reflection;
 using CsQuery.ExtensionMethods.Internal;
@@ -133,24 +131,6 @@ namespace CsQuery.ExtensionMethods.Forms
         }
 
         /// <summary>
-        /// (BETA) Update form values from the HTTP post data in the current HttpContext.
-        /// </summary>
-        ///
-        /// <param name="context">
-        /// The context in which to find process form elements
-        /// </param>
-        ///
-        /// <returns>
-        /// The context
-        /// </returns>
-
-        public static CQ RestorePost(this CQ context)
-        {
-
-            return RestorePost(context, HttpContext.Current.Request.Form);
-        }
-
-        /// <summary>
         /// (Beta) Update form values from the data in collection provided.
         /// </summary>
         ///
@@ -182,28 +162,6 @@ namespace CsQuery.ExtensionMethods.Forms
                 }
             }
             return selection;
-
-        }
-
-        /// <summary>
-        /// (Alpha) Update form values from the data in httpContext.Request.Form.
-        /// </summary>
-        ///
-        /// <param name="selection">
-        /// The selections set to update form values within; only child elements of elements in the
-        /// selection set will be processed.
-        /// </param>
-        /// <param name="httpContext">
-        /// The HttpContext from which to obtain post data
-        /// </param>
-        ///
-        /// <returns>
-        /// A CQ object with all form elements searched.
-        /// </returns>
-
-        public static CQ RestorePost(this CQ selection, HttpContext httpContext)
-        {
-            return RestorePost(selection,httpContext.Request.Form);
 
         }
 
@@ -405,7 +363,7 @@ namespace CsQuery.ExtensionMethods.Forms
         
         private static string urlEncode(string value)
         {
-            return HttpUtility.UrlEncode(value).RegexReplace(@"(?i)%[0-9A-F]{2}", m => m.Value.ToUpper());
+            return WebUtility.UrlEncode(value).RegexReplace(@"(?i)%[0-9A-F]{2}", m => m.Value.ToUpper());
         }
 
         #endregion
