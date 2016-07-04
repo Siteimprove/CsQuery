@@ -102,12 +102,12 @@ namespace CsQuery.Implementation.Mono
 				}
 
 				if (black_depth_l != black_depth_r)
-					throw new SystemException ("Internal error: black depth mismatch");
+					throw new Exception ("Internal error: black depth mismatch");
 
 				if (!IsBlack && child_is_red)
-					throw new SystemException ("Internal error: red-red conflict");
+					throw new Exception ("Internal error: red-red conflict");
 				if (Size != size)
-					throw new SystemException ("Internal error: metadata error");
+					throw new Exception ("Internal error: metadata error");
 
 				return black_depth_l + (IsBlack ? 1 : 0);
 			}
@@ -308,7 +308,7 @@ namespace CsQuery.Implementation.Mono
                         current = current.right;
                     }
                 }
-                throw new SystemException("Internal Error: index calculation");
+                throw new Exception("Internal Error: index calculation");
             }
         }
 
@@ -350,7 +350,7 @@ namespace CsQuery.Implementation.Mono
 		{
 			if (root != null) {
 				if (!root.IsBlack)
-					throw new SystemException ("Internal Error: root is not black");
+					throw new Exception ("Internal Error: root is not black");
 				root.VerifyInvariants ();
 			}
 		}
@@ -416,7 +416,7 @@ namespace CsQuery.Implementation.Mono
                 rebalance_insert(path);
 
             if (!root.IsBlack)
-                throw new SystemException("Internal error: root is not black");
+                throw new Exception("Internal error: root is not black");
 
             ++version;
             return current;
@@ -449,7 +449,7 @@ namespace CsQuery.Implementation.Mono
             current = path[curpos];
 
             if (current.Size != 1)
-                throw new SystemException("Internal Error: red-black violation somewhere");
+                throw new Exception("Internal Error: red-black violation somewhere");
 
             // remove it from our data structures
             path[curpos] = null;
@@ -466,7 +466,7 @@ namespace CsQuery.Implementation.Mono
             }
 
             if (root != null && !root.IsBlack)
-                throw new SystemException("Internal Error: root is not black");
+                throw new Exception("Internal Error: root is not black");
 
             ++version;
             return current;
@@ -673,7 +673,7 @@ namespace CsQuery.Implementation.Mono
         void node_reparent(Node orig_parent, Node orig, uint orig_size, Node updated)
         {
             if (updated != null && updated.FixSize() != orig_size)
-                throw new SystemException("Internal error: rotation");
+                throw new Exception("Internal error: rotation");
 
             if (orig == root)
                 root = updated;
@@ -682,7 +682,7 @@ namespace CsQuery.Implementation.Mono
             else if (orig == orig_parent.right)
                 orig_parent.right = updated;
             else
-                throw new SystemException("Internal error: path error");
+                throw new Exception("Internal error: path error");
         }
 
         // Pre-condition: current != null
