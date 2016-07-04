@@ -159,10 +159,6 @@ namespace CsQuery.EquationParser.Implementation
 
         #region interface members
 
-        object ICloneable.Clone()
-        {
-            return Clone();
-        }
         #endregion
     }
 }

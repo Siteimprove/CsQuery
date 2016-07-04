@@ -11,11 +11,11 @@ using System.Text;
 
 namespace CsQuery.EquationParser
 {
-    public interface IOperand : IConvertible, ICloneable
+    public interface IOperand : IConvertible
     {
         IConvertible Value { get; }
         bool IsInteger { get; }
-        new IOperand Clone();
+        IOperand Clone();
     }
     public interface IOperand<T> : IOperand where T : IConvertible
     {
