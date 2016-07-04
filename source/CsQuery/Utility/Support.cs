@@ -227,7 +227,7 @@ namespace CsQuery.Utility
 
         public static Stream GetResourceStream(string resourceName, string assembly)
         {
-            Assembly loadedAssembly = Assembly.Load(assembly);
+            Assembly loadedAssembly = Assembly.Load(new AssemblyName(assembly));
             return GetResourceStream(resourceName, loadedAssembly);
         }
 
