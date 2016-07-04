@@ -208,8 +208,12 @@ namespace CsQuery.Engine
 
         public int Register(Assembly assembly=null)
         {
-            var CallingAssembly = Support.GetFirstExternalAssembly();
-            return PopulateFromAssembly(CallingAssembly, "CsQuery.Engine.PseudoClassSelectors", "CsQuery.Extensions");
+            if (assembly != null)
+            {
+                return PopulateFromAssembly(assembly, "CsQuery.Engine.PseudoClassSelectors", "CsQuery.Extensions");
+            }
+
+            return 0;
         }
 
         /// <summary>

@@ -188,34 +188,6 @@ namespace CsQuery.Utility
         }
 
         /// <summary>
-        /// Gets the first assembly that is not the assembly that this method belongs to
-        /// </summary>
-        ///
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when the requested operation is invalid.
-        /// </exception>
-        ///
-        /// <returns>
-        /// The first external assembly.
-        /// </returns>
-
-        public static Assembly GetFirstExternalAssembly()
-        {
-            Assembly me = Assembly.GetExecutingAssembly();
-
-            StackTrace st = new StackTrace(false);
-            foreach (StackFrame frame in st.GetFrames())
-            {
-                MethodBase m = frame.GetMethod();
-                if (m != null && m.DeclaringType != null &&
-                    m.DeclaringType.Assembly != me)
-                {
-                    return m.DeclaringType.Assembly;
-                }
-            }
-            throw new InvalidOperationException("Never found an external assembly.");
-        }
-        /// <summary>
         ///  Gets a resource from the calling assembly
         /// </summary>
         /// <param name="resourceName"></param>
