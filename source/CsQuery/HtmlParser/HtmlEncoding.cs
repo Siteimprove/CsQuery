@@ -11,22 +11,22 @@ namespace CsQuery.HtmlParser
 
     public static class HtmlEncoding
     {
-        private static Dictionary<string, EncodingInfo> _Encodings;
+        private static Dictionary<string, Encoding> _Encodings;
 
         /// <summary>
         /// A dictionary of all encodings available on this system
         /// </summary>
 
-        private static Dictionary<string, EncodingInfo> Encodings
+        private static Dictionary<string, Encoding> Encodings
         {
             get
             {
                 if (_Encodings == null)
                 {
-                    _Encodings = new Dictionary<string, EncodingInfo>(StringComparer.CurrentCultureIgnoreCase);
-                    foreach (var encoding in Encoding.GetEncodings())
+                    _Encodings = new Dictionary<string, Encoding>(StringComparer.CurrentCultureIgnoreCase);
+                    foreach (var encoding in new [] {Encoding.UTF8, Encoding.ASCII, Encoding.BigEndianUnicode, Encoding.UTF32, Encoding.UTF7, Encoding.Unicode })
                     {
-                        _Encodings[encoding.Name] = encoding;
+                        _Encodings[encoding.EncodingName] = encoding;
                     }
                 }
                 return _Encodings;
@@ -50,9 +50,10 @@ namespace CsQuery.HtmlParser
 
         public static bool TryGetEncoding(string encodingName, out Encoding encoding)
         {
-            EncodingInfo info;
-            if (Encodings.TryGetValue(encodingName, out info)) {
-                encoding = info.GetEncoding();
+            Encoding info;
+            if (Encodings.TryGetValue(encodingName, out info))
+            {
+                encoding = info;
                 return true;
             } else {
                 encoding =null;
