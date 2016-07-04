@@ -359,7 +359,7 @@ namespace CsQuery.Utility
         /// <returns></returns>
         public static string MethodPath(MemberInfo mi)
         {
-            return TypePath(mi.ReflectedType) + "." + mi.Name;
+            return TypePath(mi.DeclaringType) + "." + mi.Name;
         }
 
         /// <summary>
