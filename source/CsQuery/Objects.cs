@@ -808,7 +808,7 @@ namespace CsQuery
 
         public static object CreateInstance(Type type)
         {
-            return Utility.FastActivator.CreateInstance(type);
+            return Activator.CreateInstance(type);
         }
 
         /// <summary>
@@ -825,7 +825,7 @@ namespace CsQuery
 
         public static T CreateInstance<T>() where T : class
         {
-            return Utility.FastActivator.CreateInstance<T>();
+            return Activator.CreateInstance<T>();
         }
 
         /// <summary>
@@ -1200,7 +1200,7 @@ namespace CsQuery
 
             if (target == null)
             {
-                target = FastActivator.CreateInstance(Config.DynamicObjectType);
+                target = Activator.CreateInstance(Config.DynamicObjectType);
             }
 
             else if (!Objects.IsExtendableType(target))

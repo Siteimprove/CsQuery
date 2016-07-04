@@ -160,7 +160,7 @@ namespace CsQuery.Engine
             Type type;
             if (InnerSelectors.TryGetValue(name, out type))
             {
-                instance = (IPseudoSelector)FastActivator.CreateInstance(type);
+                instance = (IPseudoSelector)Activator.CreateInstance(type);
                 return true;
             }
             instance = null;
@@ -270,7 +270,7 @@ namespace CsQuery.Engine
                 {
                     if (ti.GetInterface("IPseudoSelector") != null)
                     {
-                        IPseudoSelector instance = (IPseudoSelector)FastActivator.CreateInstance(t);
+                        IPseudoSelector instance = (IPseudoSelector)Activator.CreateInstance(t);
                         InnerSelectors[instance.Name]=t;
                         loaded++;
                     }

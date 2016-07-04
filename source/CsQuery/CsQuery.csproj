@@ -392,7 +392,6 @@
     <Compile Include="Engine\Enums.cs" />
     <Compile Include="Engine\SelectorParser.cs" />
     <Compile Include="ExtensionMethods\Forms.cs" />
-    <Compile Include="Utility\FastActivator.cs" />
     <Compile Include="Utility\SelectorCache.cs" />
     <Compile Include="Utility\Types.cs" />
     <Compile Include="Output\IOutputFormatter.cs" />
