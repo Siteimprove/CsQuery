@@ -289,7 +289,7 @@ namespace CsQuery.Implementation
             return Elements.GetEnumerator();
         }
 
-        int IReadOnlyCollection<IDomElement>.Count
+        int System.Collections.Generic.IReadOnlyCollection<IDomElement>.Count
         {
             get { return Elements.Length; }
         }
