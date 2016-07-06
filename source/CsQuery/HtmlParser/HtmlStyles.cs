@@ -27,8 +27,8 @@ namespace CsQuery.HtmlParser
         static HtmlStyles()
         {
             XmlDocument xDoc = new XmlDocument();
-            Stream dataStream = Support.GetResourceStream("CsQuery.Resources." + CssDefs);
-            xDoc.Load(dataStream);
+            //Stream dataStream = Support.GetResourceStream("CsQuery.Resources." + CssDefs);
+            xDoc.Load(new StringReader(Resources.Css3Xml));
 
             XmlNamespaceManager nsMan = new XmlNamespaceManager(xDoc.NameTable);
             nsMan.AddNamespace("cssmd", "http://schemas.microsoft.com/Visual-Studio-Intellisense/css");

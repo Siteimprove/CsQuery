@@ -27,7 +27,7 @@ namespace CsQuery.Tests
         [Test,TestMethod]
         public void AnalyzeAndVerify()
         {
-            var assem = typeof (TestTests).Assembly;
+            var assem = typeof (TestTests).GetTypeInfo().Assembly;
             foreach (var type in assem.GetTypes())
             {
                 VerifyType(type);
@@ -114,7 +114,7 @@ namespace CsQuery.Tests
         private bool VerifyClass(Type type)
         {
             HashSet<Type> hasAttributes = new HashSet<Type>();
-            var typeAttributes = type.GetCustomAttributes(true).Select(item=>item.GetType());
+            var typeAttributes = type.GetTypeInfo().GetCustomAttributes(true).Select(item=>item.GetType());
             foreach (var attr in typeAttributes)
             {
                 if (TestClassAttributes.Contains(attr))

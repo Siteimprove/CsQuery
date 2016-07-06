@@ -167,7 +167,7 @@ namespace CsQuery.Tests.Miscellaneous
         {
             var strFilePath = Support.GetFilePath(SolutionDirectory + "\\CsQuery.Tests\\Resources\\pupillogin.htm");
 
-            var objStreamReader = new StreamReader(strFilePath, Encoding.UTF8);
+            var objStreamReader = new StreamReader(File.Open(strFilePath, FileMode.Open), Encoding.UTF8);
             string str = objStreamReader.ReadToEnd();
             var dom = CQ.Create(str);
         }
