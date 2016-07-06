@@ -4,10 +4,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CsQuery.Utility
 {
+    /// <summary>
+    /// Serialization helper that always deserializes into basic types recursively.
+    /// Borrowed from here: http://stackoverflow.com/a/19140420
+    /// </summary>
+    public static class JsonHelper
+    {
+        public static object Deserialize(string json)
+        {
+            return ToObject(JToken.Parse(json));
+        }
+
+        private static object ToObject(JToken token)
+        {
+            switch (token.Type)
+            {
+                case JTokenType.Object:
+                    return token.Children<JProperty>()
+                                .ToDictionary(prop => prop.Name,
+                                              prop => ToObject(prop.Value));
+
+                case JTokenType.Array:
+                    return token.Select(ToObject).ToList();
+
+                default:
+                    return ((JValue)token).Value;
+            }
+        }
+    }
+
     /// <summary>
     /// TODO: This class needs some help. While not thrilled about the idea of writing another JSON
     /// serializer, CsQuery does some unique handling for serialization &amp;  deserialization, e.g.
@@ -24,6 +55,7 @@ namespace CsQuery.Utility
     public class JsonSerializer: IJsonSerializer
     {
         private StringBuilder sb = new StringBuilder();
+        private static readonly Regex UnquotedKeyPattern = new Regex("[{,]\\s*([a-zA-Z_][a-zA-Z0-9_]+)::", RegexOptions.Compiled);
 
         /// <summary>
         /// Serializes an object to JSON
@@ -61,6 +93,16 @@ namespace CsQuery.Utility
 
         public object Deserialize(string value, Type type)
         {
+            if (UnquotedKeyPattern.IsMatch(value))
+            {
+                value = UnquotedKeyPattern.Replace(value, "\"$1\":");
+            }
+
+            if (typeof (IDictionary<string, object>).IsAssignableFrom(type))
+            {
+                return JsonHelper.Deserialize(value);
+            }
+
             return JsonConvert.DeserializeObject(value, type);
         }
 
@@ -81,6 +123,11 @@ namespace CsQuery.Utility
 
         public T Deserialize<T>(string value)
         {
+            if (typeof (IDictionary<string, object>).IsAssignableFrom(typeof(T)))
+            {
+                return (T) JsonHelper.Deserialize(value);
+            }
+
             return JsonConvert.DeserializeObject<T>(value);
         }
 
