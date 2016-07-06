@@ -29,12 +29,15 @@ namespace CsQuery.Tests.HtmlParser
         string htmlEnd = "</div></body></html>";
         char hebrewChar = (char)164;
 
-      
+        [OneTimeSetUp, TestInitialize]
+        public void Setup()
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        }
 
         [TestMethod, Test]
         public void MetaTag()
         {
-
             var encoder = Encoding.GetEncoding("windows-1255");
 
             var html = htmlStart + htmlStartMeta + htmlStart3 +hebrewChar + htmlEnd;
