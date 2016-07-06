@@ -22,8 +22,6 @@ namespace CsQuery.HtmlParser
         
         private static char[] StringSep = new char[] { ' ' };
         
-        private static string CssDefs = "css3.xml";
-
         static HtmlStyles()
         {
             XmlDocument xDoc = new XmlDocument();
