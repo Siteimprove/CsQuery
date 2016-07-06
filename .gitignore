@@ -25,6 +25,8 @@ obj
 *.user
 *.sln.docstates
 *.jtconfig
+.vs/
+project.lock.json
 
 # Build results
 [Dd]ebug/
