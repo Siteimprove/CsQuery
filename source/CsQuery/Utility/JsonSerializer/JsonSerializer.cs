@@ -55,7 +55,7 @@ namespace CsQuery.Utility
     public class JsonSerializer: IJsonSerializer
     {
         private StringBuilder sb = new StringBuilder();
-        private static readonly Regex UnquotedKeyPattern = new Regex("[{,]\\s*([a-zA-Z_][a-zA-Z0-9_]+)::", RegexOptions.Compiled);
+        private static readonly Regex UnquotedKeyPattern = new Regex("(?<=[{,]\\s*)([a-zA-Z_][a-zA-Z0-9_-]+):", RegexOptions.Compiled);
 
         /// <summary>
         /// Serializes an object to JSON
