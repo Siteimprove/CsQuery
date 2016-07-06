@@ -1607,7 +1607,7 @@ namespace CsQuery
             {
                 return default(T);
             }
-            HashSet<Type> IgnoreList = new HashSet<Type>(ignoreAttributes);
+            HashSet<Type> IgnoreList = new HashSet<Type>(ignoreAttributes ?? new Type[0]);
 
             if (source is string && Objects.IsJson(source))
             {
