@@ -6,7 +6,7 @@
   },
   "testRunner": "mstest",
   "dependencies": {
-    "CsQuery": "1.0.0-*",
+    "CsQuery": "1.4.0-*",
     "NUnit": "3.4.1",
     "MSTest.TestFramework": "1.0.0-preview",
     "dotnet-test-mstest": "1.0.1-preview",
