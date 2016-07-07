@@ -1,23 +1,15 @@
 {
   "version": "1.4.0-*",
   "buildOptions": {
-    "debugType": "portable",
-    "emitEntryPoint": false
+    "debugType": "portable"
   },
   "dependencies": {
+    "NETStandard.Library": "1.6.0",
     "Newtonsoft.Json": "9.0.1",
     "HtmlParserSharp": "1.1.0-*",
     "System.Text.Encoding.CodePages": "4.0.1"
   },
   "frameworks": {
-    "netcoreapp1.0": {
-      "dependencies": {
-        "Microsoft.NETCore.App": {
-          "type": "platform",
-          "version": "1.0.0"
-        }
-      },
-      "imports": "dnxcore50"
-    }
+    "netstandard1.5": {}
   }
 }

@@ -1557,7 +1557,7 @@ namespace CsQuery
             else
             {
                 // It's a regular object. It cannot be extended, but set any same-named properties.
-                IEnumerable<MemberInfo> members = target.GetType().GetMembers();
+                IEnumerable<MemberInfo> members = target.GetType().GetTypeInfo().GetMembers();
 
                 foreach (var member in members)
                 {
@@ -1642,7 +1642,7 @@ namespace CsQuery
             T target = new T();
             IDictionary<string, object> targetDict = (IDictionary<string, object>)target;
 
-            IEnumerable<MemberInfo> members = source.GetType().GetMembers(BindingFlags.Public | BindingFlags.Instance);
+            IEnumerable<MemberInfo> members = source.GetType().GetTypeInfo().GetMembers(BindingFlags.Public | BindingFlags.Instance);
             foreach (var member in members)
             {
                 if (!IgnorePropertyNames.Contains(member.Name))

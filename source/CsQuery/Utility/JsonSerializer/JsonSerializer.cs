@@ -98,7 +98,7 @@ namespace CsQuery.Utility
                 value = UnquotedKeyPattern.Replace(value, "\"$1\":");
             }
 
-            if (typeof (IDictionary<string, object>).IsAssignableFrom(type))
+            if (typeof (IDictionary<string, object>).GetTypeInfo().IsAssignableFrom(type))
             {
                 return JsonHelper.Deserialize(value);
             }
@@ -123,7 +123,7 @@ namespace CsQuery.Utility
 
         public T Deserialize<T>(string value)
         {
-            if (typeof (IDictionary<string, object>).IsAssignableFrom(typeof(T)))
+            if (typeof (IDictionary<string, object>).GetTypeInfo().IsAssignableFrom(typeof(T)))
             {
                 return (T) JsonHelper.Deserialize(value);
             }
@@ -235,7 +235,9 @@ namespace CsQuery.Utility
         {
             Type type = value.GetType();
 
-            return type.GetInterfaces()
+            return type
+                .GetTypeInfo()
+                .GetInterfaces()
                 .Select(t => t.GetTypeInfo())
                 .Where(t => t.IsGenericType)
                 .Select(t => t.GetGenericTypeDefinition())
