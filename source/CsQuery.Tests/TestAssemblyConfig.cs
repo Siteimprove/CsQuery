@@ -9,16 +9,18 @@ using CsQuery.Tests;
 using CsQuery.Utility;
 using System.Reflection;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace CsQuery.Tests
 {
     [SetUpFixture,TestClass]
     public class TestAssemblyConfig
     {
-        [SetUp]
+        [OneTimeSetUp]
         public static void AssemblySetup()
         {
-
+			CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+			CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
             string solutionFolderTry;
             bool isMSTest = Support.TryGetFilePath("./TestResults/", out solutionFolderTry);
@@ -31,7 +33,7 @@ namespace CsQuery.Tests
             CsQueryTest.SolutionDirectory = Support.CleanFilePath(solutionFolderTry+"/../");
         }
         
-        [TearDown]
+        [OneTimeTearDown]
         public static void AssemblyTeardown()
         {
             

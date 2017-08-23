@@ -17,7 +17,7 @@ using CsQuery.Utility;
 namespace CsQuery.Tests.Miscellaneous
 {
 
-    [TestFixture, TestClass,Description("Misc. tests; from support and bug reports")]
+    [TestFixture, TestClass, NUnit.Framework.Description("Misc. tests; from support and bug reports")]
     public class Miscellaneous: CsQueryTest
     {
 
@@ -59,7 +59,7 @@ namespace CsQuery.Tests.Miscellaneous
 
 
 
-        [Test, TestMethod, Description("ID with space - issue #5")]
+        [Test, TestMethod, NUnit.Framework.Description("ID with space - issue #5")]
         public void TestInvalidID()
         {
             string html = @"<img alt="""" id=""Picture 7"" src=""Image.aspx?imageId=26381""
@@ -93,7 +93,7 @@ namespace CsQuery.Tests.Miscellaneous
         /// Added "AddAlways" method to NodeList to eliminate this check during DOM creation. This actually made
         /// a significant performance improvement for DOM creation too.
         /// </summary>
-        [Test, TestMethod, Description("Issue #5 side effects - make sure dup ids can be added")]
+        [Test, TestMethod, NUnit.Framework.Description("Issue #5 side effects - make sure dup ids can be added")]
         public void TestInvalidID2()
         {
             string html = @"<div id=""test""></div><div id=""test""></div>";

@@ -1,9 +1,13 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 15
+VisualStudioVersion = 15.0.26114.2
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlParserSharp", "HtmlParserSharp\HtmlParserSharp.csproj", "{FD150915-D34F-436A-92C1-80AA505DA754}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlParserSharp.Tests", "HtmlParserSharp.Tests\HtmlParserSharp.Tests.csproj", "{B0AD90A0-F661-4C4B-9B26-F2EC4DA03BC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlParserSharp", "HtmlParserSharp.csproj", "{8E60DE48-A307-4E28-BFB5-69FC15464617}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +15,8 @@ Global
 		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FD150915-D34F-436A-92C1-80AA505DA754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -25,6 +31,18 @@ Global
 		{B0AD90A0-F661-4C4B-9B26-F2EC4DA03BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0AD90A0-F661-4C4B-9B26-F2EC4DA03BC4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0AD90A0-F661-4C4B-9B26-F2EC4DA03BC4}.Release|x64.ActiveCfg = Release|Any CPU
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Debug|x64.ActiveCfg = Debug|x64
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Debug|x64.Build.0 = Debug|x64
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Debug|x86.ActiveCfg = Debug|x86
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Debug|x86.Build.0 = Debug|x86
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Release|x64.ActiveCfg = Release|x64
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Release|x64.Build.0 = Release|x64
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Release|x86.ActiveCfg = Release|x86
+		{8E60DE48-A307-4E28-BFB5-69FC15464617}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

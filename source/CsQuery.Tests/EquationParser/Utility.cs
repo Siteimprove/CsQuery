@@ -12,7 +12,7 @@ using CsQuery.EquationParser.Implementation.Functions;
 
 namespace CsQuery.Tests.EquationParser
 {
-    [TestFixture, TestClass, Description("Math Expression Parser")]
+    [TestFixture, TestClass, NUnit.Framework.Description("Math Expression Parser")]
     public class Utility
     {
         [Test, TestMethod]

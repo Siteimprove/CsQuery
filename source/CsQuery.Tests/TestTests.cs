@@ -143,7 +143,7 @@ namespace CsQuery.Tests
         private void VerifyMethods(Type type)
         {
 
-            foreach (var mi in type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            foreach (var mi in type.GetTypeInfo().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 VerifyMethod(mi);
 

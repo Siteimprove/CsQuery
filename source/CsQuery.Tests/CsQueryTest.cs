@@ -59,14 +59,14 @@ namespace CsQuery.Tests
 
         // NUnit methods
 
-        [OneTimeSetUp]
+        [OneTimeSetUp, TestInitialize]
         public virtual void FixtureSetUp()
         {
             //CQ.DefaultDocType = DocType.XHTML;
         }
 
 
-        [OneTimeTearDown]
+        [OneTimeTearDown, TestCleanup]
         public virtual void FixtureTearDown()
         {
           
