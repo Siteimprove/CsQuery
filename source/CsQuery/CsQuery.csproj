@@ -1,21 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <VersionPrefix>1.4.0</VersionPrefix>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFrameworks>netstandard1.5;net45</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>CsQuery</AssemblyName>
     <PackageId>CsQuery</PackageId>
   </PropertyGroup>
-
-  <ItemGroup>
+  
+	<ItemGroup>
     <ProjectReference Include="..\HtmlParserSharp\HtmlParserSharp.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
-    <PackageReference Include="System.Xml.XPath.XmlDocument" Version="4.3.0" />
-  </ItemGroup>
-
+  
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+		<PackageReference Include="Microsoft.CSharp" Version="4.0.0" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="4.3.0" />
+		<PackageReference Include="System.Xml.XPath.XmlDocument" Version="4.3.0" />
+	</ItemGroup>
 </Project>
