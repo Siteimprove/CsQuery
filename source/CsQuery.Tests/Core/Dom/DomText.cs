@@ -25,7 +25,7 @@ namespace CsQuery.Tests.Core.Dom
         {
             var textNode = Objects.CreateTextNode("");
             Assert.AreEqual("",textNode.NodeValue);
-            textNode = Objects.CreateTextNode(null);
+            textNode.NodeValue = null;
             Assert.AreEqual("", textNode.NodeValue);
 
         }

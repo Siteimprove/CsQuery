@@ -20,7 +20,7 @@ namespace CsQuery.Implementation
         public DomCData()
             : base()
         {
-            _NonAttributeData = new FastString("");
+            NodeValue = "";
         }
 
         /// <summary>
@@ -34,10 +34,10 @@ namespace CsQuery.Implementation
         public DomCData(string value)
             : base()
         {
-            _NonAttributeData = new FastString(value);
+            NodeValue = value;
         }
 
-        private FastString _NonAttributeData;
+        private readonly FastString _NonAttributeData = new FastString();
 
         /// <summary>
         /// Gets or sets the node value. For CDATA nodes, this is the content.
@@ -48,6 +48,10 @@ namespace CsQuery.Implementation
             get
             {
                 return _NonAttributeData.Value;
+            }
+            set
+            {
+                _NonAttributeData.Value = value;
             }
         }
 
@@ -82,7 +86,7 @@ namespace CsQuery.Implementation
             }
             set
             {
-                _NonAttributeData = new FastString(value ?? "");
+                _NonAttributeData.Value = value ?? "";
             }
         }
 
