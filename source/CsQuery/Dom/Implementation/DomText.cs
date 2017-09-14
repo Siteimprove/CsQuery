@@ -36,7 +36,7 @@ namespace CsQuery.Implementation
         public DomText(string nodeValue)
             : base()
         {
-            _NodeValue = new FastString(nodeValue);
+            NodeValue = nodeValue;
         }
 
 
@@ -44,7 +44,7 @@ namespace CsQuery.Implementation
         /// The inner node value; the text.
         /// </summary>
 
-        protected readonly FastString _NodeValue;
+        protected readonly FastString _NodeValue = new FastString();
        
 
         /// <summary>
@@ -79,6 +79,10 @@ namespace CsQuery.Implementation
             get
             {
                 return _NodeValue.Value ?? "";
+            }
+            set
+            {
+                _NodeValue.Value = value;
             }
         }
 

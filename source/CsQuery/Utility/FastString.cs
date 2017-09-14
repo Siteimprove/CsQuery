@@ -12,13 +12,14 @@ namespace CsQuery.Utility
         private string _value;
         private bool _isDirty;
 
+        public FastString()
+            : this(null)
+        {
+        }
+
         public FastString(string value)
         {
-            // Keep an initial null string as-is and only add/append non-null strings
-            if (value != null)
-            {
-                AppendValue(value);
-            }
+            Value = value;
         }
 
         public string Value
@@ -31,6 +32,19 @@ namespace CsQuery.Utility
                     _isDirty = false;
                 }
                 return _value;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    _value = null;
+                    _isDirty = false;
+                }
+                else
+                {
+                    _stringBuilder.Clear();
+                    AppendValue(value);
+                }
             }
         }
 

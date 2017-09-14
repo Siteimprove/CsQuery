@@ -30,7 +30,7 @@ namespace CsQuery
         string NodeName { get; }
 
         /// <summary>
-        /// Gets the value of this node.
+        /// Gets or sets the value of this node.
         /// </summary>
         ///
         /// <remarks>
@@ -42,7 +42,7 @@ namespace CsQuery
         /// https://developer.mozilla.org/en/DOM/Node.nodeValue
         /// </url>
 
-        string NodeValue { get; }
+        string NodeValue { get; set; }
 
         /// <summary>
         /// Append to the value of this node. The text to append must be non-null.
