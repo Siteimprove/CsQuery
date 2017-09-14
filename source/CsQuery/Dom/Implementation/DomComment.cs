@@ -149,6 +149,10 @@ namespace CsQuery.Implementation
             {
                 return NonAttributeData;
             }
+            set
+            {
+                NonAttributeData = value;
+            }
         }
 
         public override void AppendNodeValue(string text)
