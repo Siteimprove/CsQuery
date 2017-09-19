@@ -21,7 +21,7 @@ namespace CsQuery.Implementation
         public DomComment()
             : base()
         {
-            _NonAttributeData = new FastString("");
+            NonAttributeData = "";
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace CsQuery.Implementation
 
         public DomComment(string text): base()
         {
-            _NonAttributeData = new FastString(text);
+            NonAttributeData = text;
         }
 
 
@@ -42,7 +42,7 @@ namespace CsQuery.Implementation
 
         #region private properties
 
-        private FastString _NonAttributeData;
+        private readonly FastString _NonAttributeData = new FastString();
 
         #endregion
 
@@ -135,7 +135,7 @@ namespace CsQuery.Implementation
             }
             set
             {
-                _NonAttributeData = new FastString(value ?? "");
+                _NonAttributeData.Value = value ?? "";
             }
         }
 
@@ -148,6 +148,10 @@ namespace CsQuery.Implementation
             get
             {
                 return NonAttributeData;
+            }
+            set
+            {
+                NonAttributeData = value;
             }
         }
 
