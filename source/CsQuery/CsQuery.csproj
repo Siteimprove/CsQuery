@@ -12,10 +12,6 @@
 		<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
 	</ItemGroup>
 	
-	<ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-		<PackageReference Include="Microsoft.CSharp" Version="4.0.0" />
-	</ItemGroup>
-	
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
 		<PackageReference Include="System.Text.Encoding.CodePages" Version="4.3.0" />
 		<PackageReference Include="System.Xml.XPath.XmlDocument" Version="4.3.0" />

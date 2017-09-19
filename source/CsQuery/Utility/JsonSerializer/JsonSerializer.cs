@@ -174,8 +174,9 @@ namespace CsQuery.Utility
             {
                 sb.Append("{");
                 bool first = true;
-                foreach (dynamic item in (IEnumerable)value)
+                foreach (DictionaryEntry item in (IDictionary)value)
                 {
+					
                     if (first)
                     {
                         first = false;
@@ -184,7 +185,7 @@ namespace CsQuery.Utility
                     {
                         sb.Append(",");
                     }
-                    sb.Append("\"" + item.Key.ToString() + "\":" + JSON.ToJSON(item.Value));
+                    sb.Append("\"" + item.Key + "\":" + JSON.ToJSON(item.Value));
                 }
                 sb.Append("}");
             }
