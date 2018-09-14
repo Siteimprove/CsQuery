@@ -1163,7 +1163,7 @@ namespace HtmlParserSharp.Core
 				if (IsInForeign)
 				{
 					Err("End of file in a foreign namespace context.");
-					goto continueEofloop; // TODO: endless loop???
+					goto breakEofloop;
 				}
 				switch (mode)
 				{
@@ -1324,9 +1324,6 @@ namespace HtmlParserSharp.Core
 						// ]NOCPP]
 						goto breakEofloop;
 				}
-
-			continueEofloop:
-				continue;
 			}
 
 		breakEofloop:
