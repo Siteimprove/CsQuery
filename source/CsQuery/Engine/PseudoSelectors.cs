@@ -160,7 +160,7 @@ namespace CsQuery.Engine
             Type type;
             if (InnerSelectors.TryGetValue(name, out type))
             {
-                instance = (IPseudoSelector)FastActivator.CreateInstance(type);
+                instance = (IPseudoSelector)Activator.CreateInstance(type);
                 return true;
             }
             instance = null;
@@ -208,8 +208,12 @@ namespace CsQuery.Engine
 
         public int Register(Assembly assembly=null)
         {
-            var CallingAssembly = Support.GetFirstExternalAssembly();
-            return PopulateFromAssembly(CallingAssembly, "CsQuery.Engine.PseudoClassSelectors", "CsQuery.Extensions");
+            if (assembly != null)
+            {
+                return PopulateFromAssembly(assembly, "CsQuery.Engine.PseudoClassSelectors", "CsQuery.Extensions");
+            }
+
+            return 0;
         }
 
         /// <summary>
@@ -232,7 +236,7 @@ namespace CsQuery.Engine
 
         private void ValidateType(Type value)
         {
-            if (value.GetInterface("IPseudoSelector") == null)
+            if (value.GetTypeInfo().GetInterface("IPseudoSelector") == null)
             {
                 throw new ArgumentException("The type must implement IPseudoSelector.");
             }
@@ -242,7 +246,7 @@ namespace CsQuery.Engine
         private void PopulateInnerSelectors()
         {
             string defaultNamespace = "CsQuery.Engine.PseudoClassSelectors";
-            PopulateFromAssembly(Assembly.GetExecutingAssembly(),defaultNamespace);
+            PopulateFromAssembly(typeof(PseudoSelectors).GetTypeInfo().Assembly, defaultNamespace);
             if (InnerSelectors.Count == 0)
             {
                 throw new InvalidOperationException(String.Format("I didn't find the native PseudoClassSelectors in the namespace {0}.",defaultNamespace));
@@ -259,13 +263,14 @@ namespace CsQuery.Engine
             int loaded = 0;
             foreach (var t in assy.GetTypes())
             {
-                if (t.IsClass && t.Namespace != null &&
-                    !t.IsAbstract &&
-                    nameSpaces.Contains(t.Namespace))
+                var ti = t.GetTypeInfo();
+                if (ti.IsClass && ti.Namespace != null &&
+                    !ti.IsAbstract &&
+                    nameSpaces.Contains(ti.Namespace))
                 {
-                    if (t.GetInterface("IPseudoSelector") != null)
+                    if (ti.GetInterface("IPseudoSelector") != null)
                     {
-                        IPseudoSelector instance = (IPseudoSelector)FastActivator.CreateInstance(t);
+                        IPseudoSelector instance = (IPseudoSelector)Activator.CreateInstance(t);
                         InnerSelectors[instance.Name]=t;
                         loaded++;
                     }

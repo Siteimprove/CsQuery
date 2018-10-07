@@ -17,7 +17,6 @@ using CsQuery.HtmlParser;
 
 namespace CsQuery.Tests.Core.Dom
 {
-    [TestFixture, TestClass]
     public class SharedIndexTests<T> where T : IDomIndex, new()
     {   
         protected CQ CreateDom()

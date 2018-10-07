@@ -18,7 +18,7 @@ namespace CsQuery.Implementation
     /// </typeparam>
 
     public class SelectionSet<T>: ISet<T>, IList<T>, ICollection<T>,IEnumerable<T>, IEnumerable 
-        where T: IDomObject, ICloneable
+        where T: IDomObject
     {
         #region constructor
 

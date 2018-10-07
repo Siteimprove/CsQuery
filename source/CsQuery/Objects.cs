@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Dynamic;
 using System.Reflection;
-using System.Web.Script.Serialization;
 using System.ComponentModel;
 using CsQuery.ExtensionMethods;
 using CsQuery.ExtensionMethods.Internal;
@@ -22,7 +21,7 @@ namespace CsQuery
         static Objects()
         {
             IgnorePropertyNames = new HashSet<string>();
-            var info = typeof(object).GetMembers();
+            var info = typeof(object).GetTypeInfo().GetMembers();
             foreach (var member in info)
             {
                 IgnorePropertyNames.Add(member.Name);
@@ -46,7 +45,7 @@ namespace CsQuery
         public static bool IsNullableType(Type type)
         {
             return type == typeof(string) ||
-                (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+                (type.GetTypeInfo().IsGenericType && type.GetTypeInfo().GetGenericTypeDefinition() == typeof(Nullable<>));
         }
 
         /// <summary>
@@ -84,7 +83,6 @@ namespace CsQuery
         public static bool IsImmutable(object obj)
         {
             return obj == null ||
-                obj == System.DBNull.Value ||
                 obj is string ||
                 (obj is ValueType && !(Objects.IsKeyValuePair(obj)));
         }
@@ -158,7 +156,7 @@ namespace CsQuery
         public static bool IsNumericType(Type type)
         {
             Type t = GetUnderlyingType(type);
-            return t.IsPrimitive && !(t == typeof(string) || t == typeof(char) || t == typeof(bool));
+            return t.GetTypeInfo().IsPrimitive && !(t == typeof(string) || t == typeof(char) || t == typeof(bool));
         }
 
         /// <summary>
@@ -176,7 +174,8 @@ namespace CsQuery
         public static bool IsNativeType(Type type)
         {
             Type t = GetUnderlyingType(type);
-            return t.IsEnum || t.IsValueType || t.IsPrimitive || t == typeof(string);
+            var ti = t.GetTypeInfo();
+            return ti.IsEnum || ti.IsValueType || ti.IsPrimitive || t == typeof(string);
         }
 
         /// <summary>
@@ -263,9 +262,10 @@ namespace CsQuery
         public static bool IsKeyValuePair(object obj)
         {
             Type valueType = obj.GetType();
-            if (valueType.IsGenericType)
+            var valueTypeInfo = valueType.GetTypeInfo();
+            if (valueTypeInfo.IsGenericType)
             {
-                Type baseType = valueType.GetGenericTypeDefinition();
+                Type baseType = valueTypeInfo.GetGenericTypeDefinition();
                 if (baseType == typeof(KeyValuePair<,>))
                 {
                     return true;
@@ -523,7 +523,7 @@ namespace CsQuery
                     output = result;
                 }
             }
-            else if (realType.IsEnum)
+            else if (realType.GetTypeInfo().IsEnum)
             {
                 output = Enum.Parse(realType, stringVal);
                 success = true;
@@ -629,8 +629,9 @@ namespace CsQuery
 
             // If it's not a nullable type, just pass through the parameters to Convert.ChangeType
 
-            if (conversionType.IsGenericType &&
-              conversionType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            var conversionInfo = conversionType.GetTypeInfo();
+            if (conversionInfo.IsGenericType &&
+              conversionInfo.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
                 // It's a nullable type, so instead of calling Convert.ChangeType directly which would throw a
                 // InvalidCastException (per http://weblogs.asp.net/pjohnson/archive/2006/02/07/437631.aspx),
@@ -727,7 +728,7 @@ namespace CsQuery
         /// <returns></returns>
         public static IEnumerable<T> EnumerateProperties<T>(object obj)
         {
-            return EnumerateProperties<T>(obj, new Type[] { typeof(ScriptIgnoreAttribute) });
+            return EnumerateProperties<T>(obj, new Type[] {  });
         }
 
         /// <summary>
@@ -788,7 +789,7 @@ namespace CsQuery
 
         public static object DefaultValue(Type type)
         {
-            return type.IsValueType ?
+            return type.GetTypeInfo().IsValueType ?
                 CreateInstance(type) : null;
         }
 
@@ -806,7 +807,7 @@ namespace CsQuery
 
         public static object CreateInstance(Type type)
         {
-            return Utility.FastActivator.CreateInstance(type);
+            return Activator.CreateInstance(type);
         }
 
         /// <summary>
@@ -823,7 +824,7 @@ namespace CsQuery
 
         public static T CreateInstance<T>() where T : class
         {
-            return Utility.FastActivator.CreateInstance<T>();
+            return Activator.CreateInstance<T>();
         }
 
         /// <summary>
@@ -970,7 +971,7 @@ namespace CsQuery
         private static object ParseValue(object value)
         {
             object result;
-            if (value != null && value.GetType().IsAssignableFrom(typeof(DateTime)))
+            if (value != null && value.GetType().GetTypeInfo().IsAssignableFrom(typeof(DateTime)))
             {
                 result = DateTime.SpecifyKind((DateTime)value, DateTimeKind.Utc).ToLocalTime();
             }
@@ -1042,7 +1043,7 @@ namespace CsQuery
                     // This means a single type was found, and we can create a strongly typed array
                     // If it's a list of objects, map again to the default dynamic type
 
-                    if (typeof(IDictionary<string, object>).IsAssignableFrom(onlyType))
+                    if (typeof(IDictionary<string, object>).GetTypeInfo().IsAssignableFrom(onlyType))
                     {
                         array = Array.CreateInstance(Config.DynamicObjectType, objectList.Count);
                     }
@@ -1198,7 +1199,7 @@ namespace CsQuery
 
             if (target == null)
             {
-                target = FastActivator.CreateInstance(Config.DynamicObjectType);
+                target = Activator.CreateInstance(Config.DynamicObjectType);
             }
 
             else if (!Objects.IsExtendableType(target))
@@ -1234,7 +1235,7 @@ namespace CsQuery
                 else
                 {
                     // treat it as a regular object - try to copy fields/properties
-                    IEnumerable<MemberInfo> members = source.GetType().GetMembers();
+                    IEnumerable<MemberInfo> members = source.GetType().GetTypeInfo().GetMembers();
 
                     object value;
                     foreach (var member in members)
@@ -1556,7 +1557,7 @@ namespace CsQuery
             else
             {
                 // It's a regular object. It cannot be extended, but set any same-named properties.
-                IEnumerable<MemberInfo> members = target.GetType().GetMembers();
+                IEnumerable<MemberInfo> members = target.GetType().GetTypeInfo().GetMembers();
 
                 foreach (var member in members)
                 {
@@ -1606,7 +1607,7 @@ namespace CsQuery
             {
                 return default(T);
             }
-            HashSet<Type> IgnoreList = new HashSet<Type>(ignoreAttributes);
+            HashSet<Type> IgnoreList = new HashSet<Type>(ignoreAttributes ?? new Type[0]);
 
             if (source is string && Objects.IsJson(source))
             {
@@ -1641,7 +1642,7 @@ namespace CsQuery
             T target = new T();
             IDictionary<string, object> targetDict = (IDictionary<string, object>)target;
 
-            IEnumerable<MemberInfo> members = source.GetType().GetMembers(BindingFlags.Public | BindingFlags.Instance);
+            IEnumerable<MemberInfo> members = source.GetType().GetTypeInfo().GetMembers(BindingFlags.Public | BindingFlags.Instance);
             foreach (var member in members)
             {
                 if (!IgnorePropertyNames.Contains(member.Name))

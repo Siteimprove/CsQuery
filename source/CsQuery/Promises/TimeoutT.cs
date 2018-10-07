@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Timers;
+using System.Threading;
 
 namespace CsQuery.Promises
 {
@@ -85,9 +85,7 @@ namespace CsQuery.Promises
             ParameterValue = parameterValue;
             deferred = new Deferred<T>();
  
-            Timer = new Timer(timeoutMilliseconds);
-            Timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
-            Timer.Start();
+            Timer = new Timer(Timer_Elapsed, null, timeoutMilliseconds, System.Threading.Timeout.Infinite);
         }
 
         /// <summary>
@@ -129,7 +127,7 @@ namespace CsQuery.Promises
         /// Elapsed event information.
         /// </param>
 
-        protected void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        protected void Timer_Elapsed(object sender)
         {
             CompletePromise(ResolveOnTimeout);  
         }
@@ -140,7 +138,7 @@ namespace CsQuery.Promises
 
         protected void CompletePromise(bool resolve)
         {
-            Timer.Stop();
+            Timer.Dispose();
             if (resolve)
             {
                 if (useParameter)

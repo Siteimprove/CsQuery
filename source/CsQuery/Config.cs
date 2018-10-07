@@ -7,7 +7,6 @@ using CsQuery.Engine;
 using CsQuery.Output;
 using CsQuery.Implementation;
 using System.Net;
-using HttpWebAdapters;
 
 namespace CsQuery
 {
@@ -138,19 +137,6 @@ namespace CsQuery
             set
             {
                 DefaultConfig.GetOutputFormatter = value;
-            }
-        }
-
-        /// <summary>
-        /// A method that returns a new HttpWebRequest. This is mostly useful for providing an alternate
-        /// implementation for testing.
-        /// </summary>
-
-        public static IHttpWebRequestFactory WebRequestFactory
-        {
-            get
-            {
-                return DefaultConfig.WebRequestFactory;
             }
         }
 

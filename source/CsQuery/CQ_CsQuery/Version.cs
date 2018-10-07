@@ -24,7 +24,7 @@ namespace CsQuery
 
         public static string Version()
         {
-            return typeof(CQ).Assembly.GetName().Version.ToString();
+            return typeof(CQ).GetTypeInfo().Assembly.GetName().Version.ToString();
         }
     }
 }

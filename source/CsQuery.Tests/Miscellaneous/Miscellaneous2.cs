@@ -271,7 +271,7 @@ namespace CsQuery.Tests.Miscellaneous
             var dom= @"<html xmlns=""http://www.w3.org/1999/xhtml"" xmlns:xi=""http://www.w3.org/2001/XInclude""><body></html>";
 
             var cq = CQ.CreateDocument(dom);
-            Assert.AreEqual(cq["html"].Attr("xmlns:xi"),"http://www.w3.org/2001/XInclude");
+            Assert.AreEqual("http://www.w3.org/2001/XInclude", cq["html"].Attr("xmlns:xi"));
         }
 
         [Test, TestMethod]

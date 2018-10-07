@@ -27,10 +27,13 @@ namespace CsQuery.Utility
 
         public static bool IsAnonymousType(Type type)
         {
-            return Attribute.IsDefined(type, typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), false)
-                && type.IsGenericType && type.Name.Contains("AnonymousType")
-                && (type.Name.StartsWith("<>") || type.Name.StartsWith("VB$"))
-                && (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic;
+            var typeInfo = type.GetTypeInfo();
+            return typeInfo.GetCustomAttribute<System.Runtime.CompilerServices.CompilerGeneratedAttribute>() != null
+                && typeInfo.IsGenericType
+                && typeInfo.Name.Contains("AnonymousType")
+                && (typeInfo.Name.StartsWith("<>")
+                || typeInfo.Name.StartsWith("VB$"))
+                && (typeInfo.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic;
         }
     }
 }

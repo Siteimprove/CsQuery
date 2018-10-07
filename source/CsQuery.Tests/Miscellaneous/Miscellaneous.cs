@@ -10,7 +10,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 using CollectionAssert = NUnit.Framework.CollectionAssert;
-using Description = NUnit.Framework.DescriptionAttribute;
 using TestContext = Microsoft.VisualStudio.TestTools.UnitTesting.TestContext;
 using CsQuery;
 using CsQuery.Utility;
@@ -18,7 +17,7 @@ using CsQuery.Utility;
 namespace CsQuery.Tests.Miscellaneous
 {
 
-    [TestFixture, TestClass,Description("Misc. tests; from support and bug reports")]
+    [TestFixture, TestClass, NUnit.Framework.Description("Misc. tests; from support and bug reports")]
     public class Miscellaneous: CsQueryTest
     {
 
@@ -60,7 +59,7 @@ namespace CsQuery.Tests.Miscellaneous
 
 
 
-        [Test, TestMethod, Description("ID with space - issue #5")]
+        [Test, TestMethod, NUnit.Framework.Description("ID with space - issue #5")]
         public void TestInvalidID()
         {
             string html = @"<img alt="""" id=""Picture 7"" src=""Image.aspx?imageId=26381""
@@ -94,7 +93,7 @@ namespace CsQuery.Tests.Miscellaneous
         /// Added "AddAlways" method to NodeList to eliminate this check during DOM creation. This actually made
         /// a significant performance improvement for DOM creation too.
         /// </summary>
-        [Test, TestMethod, Description("Issue #5 side effects - make sure dup ids can be added")]
+        [Test, TestMethod, NUnit.Framework.Description("Issue #5 side effects - make sure dup ids can be added")]
         public void TestInvalidID2()
         {
             string html = @"<div id=""test""></div><div id=""test""></div>";
@@ -168,7 +167,7 @@ namespace CsQuery.Tests.Miscellaneous
         {
             var strFilePath = Support.GetFilePath(SolutionDirectory + "\\CsQuery.Tests\\Resources\\pupillogin.htm");
 
-            var objStreamReader = new StreamReader(strFilePath, Encoding.UTF8);
+            var objStreamReader = new StreamReader(File.Open(strFilePath, FileMode.Open), Encoding.UTF8);
             string str = objStreamReader.ReadToEnd();
             var dom = CQ.Create(str);
         }

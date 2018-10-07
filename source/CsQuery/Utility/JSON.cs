@@ -7,6 +7,7 @@ using System.Dynamic;
 using System.Text.RegularExpressions;
 using CsQuery.ExtensionMethods;
 using CsQuery.ExtensionMethods.Internal;
+using System.Reflection;
 
 namespace CsQuery.Utility
 {
@@ -94,7 +95,7 @@ namespace CsQuery.Utility
 
         public static object ParseJSON(string json, Type type)
         {
-            if (typeof(IDynamicMetaObjectProvider).IsAssignableFrom(type))
+            if (typeof(IDynamicMetaObjectProvider).GetTypeInfo().IsAssignableFrom(type))
             {
                 return ParseJSONObject(json);
             }
@@ -282,7 +283,7 @@ namespace CsQuery.Utility
                     int integer;
                     if (int.TryParse(jsonValue, out integer))
                     {
-                        value = type.IsEnum ?
+                        value = type.GetTypeInfo().IsEnum ?
                             Enum.Parse(type, integer.ToString()) :
                                 isObject ?
                                     integer :
@@ -537,7 +538,7 @@ namespace CsQuery.Utility
             }
             if (typed)
             {
-                Type listType = typeof(List<>).MakeGenericType(new Type[] { oneType });
+                Type listType = typeof(List<>).GetTypeInfo().MakeGenericType(new Type[] { oneType });
                 IList typedList = (IList)Objects.CreateInstance(listType);
                 foreach (var item in list)
                 {

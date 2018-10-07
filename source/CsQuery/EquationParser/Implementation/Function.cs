@@ -196,7 +196,7 @@ namespace CsQuery.EquationParser.Implementation
 
         public new IFunction<T> Clone()
         {
-            return (IFunction<T>)Clone();
+            throw new NotImplementedException();
         }
 
         IOperand<T> IOperand<T>.Clone()

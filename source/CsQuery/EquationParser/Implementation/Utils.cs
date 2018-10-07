@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 // TODO this should be fully commented; however it's not part of the main public API
@@ -79,7 +80,7 @@ namespace CsQuery.EquationParser.Implementation
 
         public static bool IsNumericType(Type type)
         {
-            return type.IsPrimitive && !(type == typeof(string) || type == typeof(char) || type == typeof(bool));
+            return type.GetTypeInfo().IsPrimitive && !(type == typeof(string) || type == typeof(char) || type == typeof(bool));
         }
 
         /// <summary>
@@ -97,7 +98,7 @@ namespace CsQuery.EquationParser.Implementation
 
         public static bool IsNumericConvertible(Type type)
         {
-            return type.IsPrimitive && !(type  == typeof(string));
+            return type.GetTypeInfo().IsPrimitive && !(type  == typeof(string));
         }
 
         /// <summary>
@@ -199,7 +200,7 @@ namespace CsQuery.EquationParser.Implementation
         public static bool IsNullableType(Type type)
         {
             return type == typeof(string) ||
-                (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+                (type.GetTypeInfo().IsGenericType && type.GetTypeInfo().GetGenericTypeDefinition() == typeof(Nullable<>));
         }
 
 

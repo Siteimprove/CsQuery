@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Web;
-using System.Web.UI.WebControls;
-using System.Web.UI;
 using System.Text.RegularExpressions;
 using System.Linq;
-using System.Web.Script.Serialization;
 using System.Dynamic;
+using System.Net;
 using System.Text;
 using System.Reflection;
 using CsQuery.ExtensionMethods.Internal;
@@ -131,149 +128,7 @@ namespace CsQuery.ExtensionMethods.Forms
 
             
         }
-
-        /// <summary>
-        /// (BETA) Update form values from the HTTP post data in the current HttpContext.
-        /// </summary>
-        ///
-        /// <param name="context">
-        /// The context in which to find process form elements
-        /// </param>
-        ///
-        /// <returns>
-        /// The context
-        /// </returns>
-
-        public static CQ RestorePost(this CQ context)
-        {
-
-            return RestorePost(context, HttpContext.Current.Request.Form);
-        }
-
-        /// <summary>
-        /// (Beta) Update form values from the data in collection provided.
-        /// </summary>
-        ///
-        /// <param name="selection">
-        /// The selections set to update form values within; only child elements of elements in the
-        /// selection set will be processed.
-        /// </param>
-        /// <param name="postData">
-        /// Information describing the post.
-        /// </param>
-        ///
-        /// <returns>
-        /// A CQ object with all form elements searched.
-        /// </returns>
-
-        public static CQ RestorePost(this CQ selection, NameValueCollection postData)
-        {
-            string selector = "input[name], select[name], button[name], textarea";
-            CQ src = selection.Selector == null ?
-                selection.Select(selector) :
-                selection.Find(selector);
-
-            HashSet<string> keys = new HashSet<string>(postData.AllKeys);
-            foreach (IDomElement e in src)
-            {
-                if (keys.Contains(e.Name))
-                {
-                    RestoreData(e, selection, postData[e.Name]);
-                }
-            }
-            return selection;
-
-        }
-
-        /// <summary>
-        /// (Alpha) Update form values from the data in httpContext.Request.Form.
-        /// </summary>
-        ///
-        /// <param name="selection">
-        /// The selections set to update form values within; only child elements of elements in the
-        /// selection set will be processed.
-        /// </param>
-        /// <param name="httpContext">
-        /// The HttpContext from which to obtain post data
-        /// </param>
-        ///
-        /// <returns>
-        /// A CQ object with all form elements searched.
-        /// </returns>
-
-        public static CQ RestorePost(this CQ selection, HttpContext httpContext)
-        {
-            return RestorePost(selection,httpContext.Request.Form);
-
-        }
-
-        /// <summary>
-        /// Restore "value" to a single element.
-        /// </summary>
-        ///
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when the requested operation is invalid.
-        /// </exception>
-        ///
-        /// <param name="element">
-        /// The element to restore a value to
-        /// </param>
-        /// <param name="csQueryContext">
-        /// The context to which this element belongs
-        /// </param>
-        /// <param name="value">
-        /// The value to restore
-        /// </param>
-
-        private static void RestoreData(IDomElement element, CQ csQueryContext, string value)
-        {
-            switch (element.NodeNameID)
-            {
-                case HtmlData.tagTEXTAREA:
-                    element.TextContent = value;
-                    break;
-                case HtmlData.tagINPUT:
-                    switch (element["type"])
-                    {
-                        case "checkbox":
-                        case "radio":
-                            if (value != null && 
-                                ((element.Value ?? "on") == value))
-                            {
-                                element.SetAttribute("checked");
-                            }
-                            else
-                            {
-                                element.RemoveAttribute("checked");
-                            }
-                            break;
-                        case "hidden":
-                        case "text":
-                        case "password":
-                        case "button":
-                        case "submit":
-                        case "image":
-                            element.SetAttribute("value", value);
-                            break;
-                        case "file":
-                            break;
-                        default:
-                            element.SetAttribute("value", value);
-                            break;
-                    }
-                    break;
-                case HtmlData.tagSELECT:
-                case HtmlData.tagBUTTON:
-                    csQueryContext[element].Val(value);
-                    break;
-                        
-                default:
-                    throw new InvalidOperationException(String.Format("An unknown element type was found while restoring post data: '{0}'", element.NodeName));
-            }
-            
-
-        }
-
+        
         /// <summary>
         /// Build a dropdown list for each element in the selection set using name/value pairs from data.
         /// Note tha the "key" becomes the "value" on the element, and the "value" becomes the text
@@ -334,7 +189,7 @@ namespace CsQuery.ExtensionMethods.Forms
             string zeroText = null, 
             bool format = false) where T : IConvertible
         {
-            if (!typeof(T).IsEnum)
+            if (!typeof(T).GetTypeInfo().IsEnum)
             {
                 throw new ArgumentException("T must be an enumerated type");
             }
@@ -405,7 +260,7 @@ namespace CsQuery.ExtensionMethods.Forms
         
         private static string urlEncode(string value)
         {
-            return HttpUtility.UrlEncode(value).RegexReplace(@"(?i)%[0-9A-F]{2}", m => m.Value.ToUpper());
+            return WebUtility.UrlEncode(value).RegexReplace(@"(?i)%[0-9A-F]{2}", m => m.Value.ToUpper());
         }
 
         #endregion

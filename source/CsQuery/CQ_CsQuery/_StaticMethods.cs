@@ -5,13 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Dynamic;
 using System.IO;
-using System.Web;
-using System.Web.Script.Serialization;
-
 using CsQuery.ExtensionMethods.Internal;
 using CsQuery.Utility;
 using CsQuery.Engine;
-using CsQuery.Web;
 using CsQuery.Promises;
 using CsQuery.HtmlParser;
 using CsQuery.Implementation;
@@ -56,8 +52,6 @@ namespace CsQuery
         #endregion 
 
         #region private properties
-        
-        private static Browser _Browser;
         
         #endregion
 
@@ -192,23 +186,6 @@ namespace CsQuery
             else
             {
                 return Objects.ToExpando<T>(obj);
-            }
-        }
-
-        /// <summary>
-        /// (Alpha) Provide simple user agent information.
-        /// </summary>
-
-        public static Browser Browser
-        {
-            get
-            {
-                if (_Browser == null)
-                {
-                    _Browser = new Browser(HttpContext.Current);
-                }
-
-                return _Browser;
             }
         }
         
