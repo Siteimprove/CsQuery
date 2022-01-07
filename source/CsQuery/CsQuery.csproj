@@ -6,6 +6,9 @@
     <AssemblyName>CsQuery</AssemblyName>
     <PackageId>CsQuery</PackageId>
     <Version>2.1.0</Version>
+	<summary>A complete CSS selector engine and jQuery port for .NET 4 and C#.</summary>
+    <description>CsQuery is an HTML parser, CSS selector engine and jQuery port for .NET 4 and C#. It implements all CSS2 and CSS3 selectors, all the DOM manipulation methods of jQuery, and some of the utility methods. </description>
+	<authors>James Treworgy</authors>
   </PropertyGroup>
   
   <ItemGroup>
