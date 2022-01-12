@@ -1,23 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.1.0</VersionPrefix>
-    <TargetFrameworks>netstandard1.5;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>HtmlParserSharp</AssemblyName>
     <OutputType>Library</OutputType>
     <PackageId>HtmlParserSharp</PackageId>
-    <Version>1.2.2</Version>
+    <Version>1.2.3</Version>
   </PropertyGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
-		<PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
-		<PackageReference Include="System.Xml.XmlDocument" Version="4.0.1" />
-		<PackageReference Include="system.xml.xpath.xmldocument" Version="4.0.1" />
-		<PackageReference Include="System.ComponentModel.TypeConverter" Version="4.1.0" />
-	</ItemGroup>
 
 </Project>
