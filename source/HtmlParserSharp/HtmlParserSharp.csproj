@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <DebugType>portable</DebugType>
+    <AssemblyName>HtmlParserSharp</AssemblyName>
+    <OutputType>Library</OutputType>
+    <PackageId>HtmlParserSharp</PackageId>
+    <Version>1.2.3</Version>
+  </PropertyGroup>
+
+</Project>

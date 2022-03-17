@@ -304,10 +304,7 @@ namespace CsQuery.Implementation
         {
             return Clone();
         }
-        object ICloneable.Clone()
-        {
-            return Clone();
-        }
+        
 
 
         #endregion

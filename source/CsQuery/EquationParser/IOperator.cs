@@ -11,14 +11,14 @@ using System.Text;
 
 namespace CsQuery.EquationParser
 {
-    public interface IOperator: ICloneable 
+    public interface IOperator 
     {
         void Set(string value);
         bool TrySet(string value);
         OperationType OperationType { get; }
         AssociationType AssociationType { get; }
         bool IsInverted { get; }
-        new IOperator Clone();
+        IOperator Clone();
 
         IOperation GetFunction();
     }

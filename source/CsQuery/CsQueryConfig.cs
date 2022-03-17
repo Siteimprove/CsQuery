@@ -7,7 +7,7 @@ using CsQuery.Engine;
 using CsQuery.Output;
 using CsQuery.Implementation;
 using System.Net;
-using HttpWebAdapters;
+using System.Reflection;
 
 namespace CsQuery
 {
@@ -185,24 +185,6 @@ namespace CsQuery
         }
 
         /// <summary>
-        /// A method that returns a new HttpWebRequest. This is mostly useful for providing an alternate
-        /// implementation for testing.
-        /// </summary>
-
-        public IHttpWebRequestFactory WebRequestFactory
-        {
-            get
-            {
-                if (_WebRequestFactory == null)
-                {
-                    _WebRequestFactory = new HttpWebRequestFactory();
-                }
-                return _WebRequestFactory;
-            }
-        }
-        private IHttpWebRequestFactory _WebRequestFactory;
-
-        /// <summary>
         /// Default document type. This is the parsing mode that will be used when creating documents
         /// that have no DocType and no mode is explicitly defined.
         /// </summary>
@@ -236,10 +218,9 @@ namespace CsQuery
             }
             set
             {
-                if (value.GetInterfaces().Where(item =>
-                    item == typeof(IDynamicMetaObjectProvider) ||
-                    item == typeof(IDictionary<string, object>))
-                    .Count() == 2)
+                if (value.GetTypeInfo().GetInterfaces()
+                    .Count(item => item == typeof(IDynamicMetaObjectProvider) ||
+                    item == typeof(IDictionary<string, object>)) == 2)
                 {
                     _DynamicObjectType = value;
                 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.CompilerServices;
-using CsQuery.Implementation;
+﻿using System.Collections.Generic;
 
 namespace CsQuery
 {
@@ -16,7 +10,7 @@ namespace CsQuery
     /// Generic type parameter.
     /// </typeparam>
 
-    public interface INodeList<T> : IReadOnlyList<T>, IReadOnlyCollection<T>, IEnumerable<T> where T : IDomObject
+    public interface INodeList<T> : System.Collections.Generic.IReadOnlyList<T> where T : IDomObject
     {
         /// <summary>
         /// The number of nodes in this INodeList

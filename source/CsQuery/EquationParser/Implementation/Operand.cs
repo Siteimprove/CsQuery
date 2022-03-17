@@ -11,7 +11,7 @@ using System.Text;
 
 namespace CsQuery.EquationParser.Implementation
 {
-    public abstract class Operand: IOperand, ICloneable
+    public abstract class Operand: IOperand
     {
         protected int intValue;
         protected double doubleValue;
@@ -51,10 +51,6 @@ namespace CsQuery.EquationParser.Implementation
         //}
         //protected abstract IOperand<U> CloneAsImpl<U>() where U : IConvertible;
 
-        object ICloneable.Clone()
-        {
-            return Clone();
-        }
         public IConvertible Value
         {
             get
@@ -258,10 +254,7 @@ namespace CsQuery.EquationParser.Implementation
             } 
         }
 
-        public new IOperand<T> Clone()
-        {
-            return (IOperand<T>)Clone();
-        }
+        public new abstract IOperand<T> Clone();
 
         public override string ToString()
         {

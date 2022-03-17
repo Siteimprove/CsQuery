@@ -175,8 +175,8 @@ namespace CsQuery.Promises
                 var deferred = GetNextDeferred();
 
                 MethodInfo method = success != null ?
-                    success.Method :
-                    failure.Method;
+                    success.GetMethodInfo() :
+                    failure.GetMethodInfo();
 
                 Type returnType = method.ReturnType;
                 Type[] parameters = method.GetParameters().Select(item => item.ParameterType).ToArray();

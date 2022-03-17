@@ -28,7 +28,7 @@ namespace CsQuery.Implementation
         /// </summary>
         public AttributeCollection2()
         {
-            InnerKeys = new ushort[maxArraySize];
+            InnerKeys = new ulong[maxArraySize];
             InnerValues = new string[maxArraySize];
         }
 
@@ -39,9 +39,9 @@ namespace CsQuery.Implementation
         private const int maxArraySize=3;
 
         private bool UseDict;
-        private ushort[] InnerKeys;
+        private ulong[] InnerKeys;
         private string[] InnerValues;
-        private IDictionary<ushort, string> InnerDictionary;
+        private IDictionary<ulong, string> InnerDictionary;
         
         internal string this[ushort nodeId]
         {
@@ -115,7 +115,7 @@ namespace CsQuery.Implementation
         {
             return Unset(name);
         }
-        public bool Remove(ushort tokenId)
+        public bool Remove(ulong tokenId)
         {
             return Unset(tokenId);
         }
@@ -145,7 +145,7 @@ namespace CsQuery.Implementation
                 return InnerDictionary.ContainsKey(HtmlData.Tokenize(key));
             }
         }
-        public bool ContainsKey(ushort tokenId)
+        public bool ContainsKey(ulong tokenId)
         {
             if (Count == 0)
             {
@@ -214,7 +214,7 @@ namespace CsQuery.Implementation
             return value != null ||
                 ContainsKey(HtmlData.Tokenize(key));
         }
-        public bool TryGetValue(ushort key, out string value)
+        public bool TryGetValue(ulong key, out string value)
         {
             // do not use trygetvalue from dictionary. We need default handling in Get
             value = Get(key);
@@ -227,11 +227,11 @@ namespace CsQuery.Implementation
         /// <param name="name"></param>
         public void SetBoolean(string name)
         {
-            ushort tokenId = HtmlData.Tokenize(name);
+	        ulong tokenId = HtmlData.Tokenize(name);
 
             SetBoolean(tokenId);
         }
-        public void SetBoolean(ushort tokenId)
+        public void SetBoolean(ulong tokenId)
         {
 
             if (!UseDict)
@@ -262,7 +262,7 @@ namespace CsQuery.Implementation
         {
             return Unset(HtmlData.Tokenize(name));
         }
-        public bool Unset(ushort tokenId)
+        public bool Unset(ulong tokenId)
         {
             
             if (!UseDict)
@@ -304,7 +304,7 @@ namespace CsQuery.Implementation
                 if (Count > maxArraySize)
                 {
                     UseDict = true;
-                    InnerDictionary = new Dictionary<ushort, string>();
+                    InnerDictionary = new Dictionary<ulong, string>();
                     for (int i = 0; i < maxArraySize; i++)
                     {
                         InnerDictionary[InnerKeys[i]] = InnerValues[i];
@@ -327,7 +327,7 @@ namespace CsQuery.Implementation
             }
             return Get(HtmlData.Tokenize(name));
         }
-        protected string Get(ushort tokenId)
+        protected string Get(ulong tokenId)
         {
             string value;
             if (!UseDict)
@@ -366,7 +366,7 @@ namespace CsQuery.Implementation
         /// </summary>
         /// <param name="tokenId"></param>
         /// <param name="value"></param>
-        protected void Set(ushort tokenId, string value)
+        protected void Set(ulong tokenId, string value)
         {
             if (value == null)
             {
@@ -382,7 +382,7 @@ namespace CsQuery.Implementation
         /// </summary>
         /// <param name="tokenId"></param>
         /// <param name="value"></param>
-        internal void SetRaw(ushort tokenId, string value)
+        internal void SetRaw(ulong tokenId, string value)
         {
             
             if (!UseDict)
@@ -427,7 +427,7 @@ namespace CsQuery.Implementation
             }
         }
 
-        internal IEnumerable<ushort> GetAttributeIds()
+        internal IEnumerable<ulong> GetAttributeIds()
         {
             if (!UseDict)
             {

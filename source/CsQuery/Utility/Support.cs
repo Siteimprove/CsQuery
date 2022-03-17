@@ -72,9 +72,13 @@ namespace CsQuery.Utility
                     cleanFileName = cleanFileName.Substring(1);
                 }
 
-                string callingAssPath = AppDomain.CurrentDomain.BaseDirectory;
+#if NETSTANDARD1_5
+				var callingAssPath = AppContext.BaseDirectory;
+#else
+				var callingAssPath = AppDomain.CurrentDomain.BaseDirectory;
+#endif
 
-                return  TryGetFilePath(cleanFileName, callingAssPath, out filePath);
+				return TryGetFilePath(cleanFileName, callingAssPath, out filePath);
 
             }
 
@@ -188,41 +192,13 @@ namespace CsQuery.Utility
         }
 
         /// <summary>
-        /// Gets the first assembly that is not the assembly that this method belongs to
-        /// </summary>
-        ///
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when the requested operation is invalid.
-        /// </exception>
-        ///
-        /// <returns>
-        /// The first external assembly.
-        /// </returns>
-
-        public static Assembly GetFirstExternalAssembly()
-        {
-            Assembly me = Assembly.GetExecutingAssembly();
-
-            StackTrace st = new StackTrace(false);
-            foreach (StackFrame frame in st.GetFrames())
-            {
-                MethodBase m = frame.GetMethod();
-                if (m != null && m.DeclaringType != null &&
-                    m.DeclaringType.Assembly != me)
-                {
-                    return m.DeclaringType.Assembly;
-                }
-            }
-            throw new InvalidOperationException("Never found an external assembly.");
-        }
-        /// <summary>
         ///  Gets a resource from the calling assembly
         /// </summary>
         /// <param name="resourceName"></param>
         /// <returns></returns>
         public static Stream GetResourceStream(string resourceName)
         {
-            return GetResourceStream(resourceName, Assembly.GetCallingAssembly());
+            return GetResourceStream(resourceName, typeof(Support).GetTypeInfo().Assembly);
         }
 
         /// <summary>
@@ -255,7 +231,7 @@ namespace CsQuery.Utility
 
         public static Stream GetResourceStream(string resourceName, string assembly)
         {
-            Assembly loadedAssembly = Assembly.Load(assembly);
+            Assembly loadedAssembly = Assembly.Load(new AssemblyName(assembly));
             return GetResourceStream(resourceName, loadedAssembly);
         }
 
@@ -387,7 +363,7 @@ namespace CsQuery.Utility
         /// <returns></returns>
         public static string MethodPath(MemberInfo mi)
         {
-            return TypePath(mi.ReflectedType) + "." + mi.Name;
+            return TypePath(mi.DeclaringType) + "." + mi.Name;
         }
 
         /// <summary>

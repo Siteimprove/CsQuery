@@ -2,11 +2,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Web.Script.Serialization;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CsQuery.Utility
 {
+    /// <summary>
+    /// Serialization helper that always deserializes into basic types recursively.
+    /// Borrowed from here: http://stackoverflow.com/a/19140420
+    /// </summary>
+    public static class JsonHelper
+    {
+        public static object Deserialize(string json)
+        {
+            return ToObject(JToken.Parse(json));
+        }
+
+        private static object ToObject(JToken token)
+        {
+            switch (token.Type)
+            {
+                case JTokenType.Object:
+                    return token.Children<JProperty>()
+                                .ToDictionary(prop => prop.Name,
+                                              prop => ToObject(prop.Value));
+
+                case JTokenType.Array:
+                    return token.Select(ToObject).ToList();
+
+                default:
+                    return ((JValue)token).Value;
+            }
+        }
+    }
+
     /// <summary>
     /// TODO: This class needs some help. While not thrilled about the idea of writing another JSON
     /// serializer, CsQuery does some unique handling for serialization &amp;  deserialization, e.g.
@@ -22,19 +54,8 @@ namespace CsQuery.Utility
 
     public class JsonSerializer: IJsonSerializer
     {
-        /// <summary>
-        ///  The real serializer implementation. We need to set up a DI contiainer to manage this (see todo above)
-        /// </summary>
-        private static Lazy<JavaScriptSerializer> _Serializer = new Lazy<JavaScriptSerializer>();
-        private static JavaScriptSerializer Serializer
-        {
-            get
-            {
-                return _Serializer.Value;
-            }
-        }
-        
         private StringBuilder sb = new StringBuilder();
+        private static readonly Regex UnquotedKeyPattern = new Regex("(?<=[{,]\\s*)([a-zA-Z_][a-zA-Z0-9_-]+):", RegexOptions.Compiled);
 
         /// <summary>
         /// Serializes an object to JSON
@@ -72,7 +93,17 @@ namespace CsQuery.Utility
 
         public object Deserialize(string value, Type type)
         {
-            return Serializer.ConvertToType(Serializer.DeserializeObject(value), type);
+            if (UnquotedKeyPattern.IsMatch(value))
+            {
+                value = UnquotedKeyPattern.Replace(value, "\"$1\":");
+            }
+
+            if (typeof (IDictionary<string, object>).GetTypeInfo().IsAssignableFrom(type))
+            {
+                return JsonHelper.Deserialize(value);
+            }
+
+            return JsonConvert.DeserializeObject(value, type);
         }
 
         /// <summary>
@@ -92,7 +123,12 @@ namespace CsQuery.Utility
 
         public T Deserialize<T>(string value)
         {
-            return Serializer.Deserialize<T>(value);
+            if (typeof (IDictionary<string, object>).GetTypeInfo().IsAssignableFrom(typeof(T)))
+            {
+                return (T) JsonHelper.Deserialize(value);
+            }
+
+            return JsonConvert.DeserializeObject<T>(value);
         }
 
         #region private methods
@@ -110,7 +146,7 @@ namespace CsQuery.Utility
                 foreach (KeyValuePair<string,object> kvp in 
                     Objects.EnumerateProperties<KeyValuePair<string,object>>(
                         value,
-                        new Type[] {typeof(ScriptIgnoreAttribute)})
+                        null)
                 ) {
                     if (first)
                     {
@@ -132,14 +168,15 @@ namespace CsQuery.Utility
         {
             if (Objects.IsImmutable(value))
             {
-                sb.Append(Serializer.Serialize(value));
+                sb.Append(JsonConvert.SerializeObject(value));
             }
             else if (IsDictionary(value))
             {
                 sb.Append("{");
                 bool first = true;
-                foreach (dynamic item in (IEnumerable)value)
+                foreach (DictionaryEntry item in (IDictionary)value)
                 {
+					
                     if (first)
                     {
                         first = false;
@@ -148,7 +185,7 @@ namespace CsQuery.Utility
                     {
                         sb.Append(",");
                     }
-                    sb.Append("\"" + item.Key.ToString() + "\":" + JSON.ToJSON(item.Value));
+                    sb.Append("\"" + item.Key + "\":" + JSON.ToJSON(item.Value));
                 }
                 sb.Append("}");
             }
@@ -199,10 +236,13 @@ namespace CsQuery.Utility
         {
             Type type = value.GetType();
 
-            return type.GetInterfaces()
-              .Where(t => t.IsGenericType)
-              .Select(t => t.GetGenericTypeDefinition())
-              .Any(t => t.Equals(typeof(IDictionary<,>)));
+            return type
+                .GetTypeInfo()
+                .GetInterfaces()
+                .Select(t => t.GetTypeInfo())
+                .Where(t => t.IsGenericType)
+                .Select(t => t.GetGenericTypeDefinition())
+                .Any(t => t == typeof (IDictionary<,>));
 
         }
 

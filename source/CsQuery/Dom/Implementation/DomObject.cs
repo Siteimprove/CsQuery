@@ -1831,18 +1831,6 @@ namespace CsQuery.Implementation
          }
 
          /// <summary>
-         /// Makes a deep copy of this object.
-         /// </summary>
-         ///
-         /// <returns>
-         /// A copy of this object.
-         /// </returns>
-
-         object ICloneable.Clone()
-         {
-             return Clone();
-         }
-         /// <summary>
          /// Compares this IDomObject object to another to determine their relative ordering.
          /// </summary>
          ///

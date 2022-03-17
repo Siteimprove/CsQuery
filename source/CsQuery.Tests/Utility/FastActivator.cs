@@ -23,7 +23,7 @@ namespace CsQuery.Tests.Utility
         [Test,TestMethod]
         public void CreateInstance_Object()
         {
-            var test = FastActivator.CreateInstance<TestClass>();
+            var test = Activator.CreateInstance<TestClass>();
 
             Assert.AreEqual(1, test.integer);
 
@@ -31,7 +31,7 @@ namespace CsQuery.Tests.Utility
 
         [TestMethod,Test]
         public void CreateInstance_Type() {
-            var integer = FastActivator.CreateInstance(typeof(int));
+            var integer = Activator.CreateInstance(typeof(int));
             Assert.AreEqual(integer, 0);
 
         }

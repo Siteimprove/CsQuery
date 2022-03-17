@@ -23,13 +23,13 @@ namespace Jtc.CsQuery.Tests
 
             byte[] filedata;
             System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
-            string filePath = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
+            string filePath = Path.GetDirectoryName(typeof(Support).GetTypeInfo().Assembly.Location);
 
             FileStream fs = System.IO.File.Open(filePath + "\\" + fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
             filedata = new byte[fs.Length];
             fs.Read(filedata, 0, (int)fs.Length);
             string result = enc.GetString(filedata).Replace("\r", " ").Replace("\n", " ");
-            fs.Close();
+            fs.Dispose();
             return (result);
         }
     }
